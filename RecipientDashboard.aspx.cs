@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace Food_Donor_Management_System
 {
-    public partial class Contact : Page
+    public partial class RecipientDashboard : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
