@@ -23,14 +23,17 @@ namespace Food_Donor_Management_System
             string email = txtEmail.Text;
             string passwordHash = HashPassword(txtPassword.Text);
 
-            string query = $"SELECT Role FROM Users WHERE Email = '{email}' AND PasswordHash = '{passwordHash}'";
+            string query = $"SELECT ID,Role FROM Users WHERE Email = '{email}' AND PasswordHash = '{passwordHash}'";
             DataTable dt = DatabaseHelper.ExecuteQuery(query);
 
             if (dt.Rows.Count > 0)
             {
+                // work on this tom
                 string role = dt.Rows[0]["Role"].ToString();
+                string id = dt.Rows[0]["ID"].ToString();
                 Session["UserRole"] = role;
                 Session["UserEmail"] = email;
+                Session["UserID"] = id;
 
                 if (role == "Admin") Response.Redirect("AdminDashboard.aspx");
                 else if (role == "Donor") Response.Redirect("DonorDashboard.aspx");
