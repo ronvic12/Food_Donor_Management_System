@@ -5,6 +5,7 @@
 <asp:TextBox ID="txtEmail" runat="server" Placeholder="Email"></asp:TextBox>
 <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" Placeholder="Password"></asp:TextBox>
 <asp:DropDownList ID="ddlRole" runat="server">
+    <asp:ListItem Text="Admin" Value="Admin" />
     <asp:ListItem Text="Donor" Value="Donor" />
     <asp:ListItem Text="Recipient" Value="Recipient" />
 </asp:DropDownList>
