@@ -15,10 +15,10 @@ namespace Food_Donor_Management_System
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            
         }
 
-        protected void btnLogin_Click(object sender, EventArgs e)
+        protected void Login_Authenticate(object sender, EventArgs e)
         {
             string email = txtEmail.Text;
             string passwordHash = HashPassword(txtPassword.Text);
@@ -41,7 +41,7 @@ namespace Food_Donor_Management_System
             }
             else
             {
-                lblMessage.Text = "Invalid login credentials!";
+                lblMessage.Text = "Invalid Email or Password credentials! If you forgot your password, go to forgot password";
             }
         }
         private string HashPassword(string password)

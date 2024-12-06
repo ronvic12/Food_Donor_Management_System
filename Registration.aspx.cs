@@ -28,7 +28,7 @@ namespace Food_Donor_Management_System
             string query = $"INSERT INTO Users (Name, Email, PasswordHash, Role) VALUES ('{name}', '{email}', '{passwordHash}', '{role}')";
             DatabaseHelper.ExecuteNonQuery(query);
 
-            lblMessage.Text = "Registration successful!";
+            lblMessage.Text = "Registration successful!"; //add a hyperlink to route back to Login Page
         }
 
         private string HashPassword(string password)
@@ -45,6 +45,9 @@ namespace Food_Donor_Management_System
             }
         }
 
+        protected void ddlRole_SelectedIndexChanged(object sender, EventArgs e)
+        {
 
+        }
     }
 }

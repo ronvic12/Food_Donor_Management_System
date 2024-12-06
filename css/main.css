@@ -1,0 +1,22 @@
+﻿.container {
+    /* This is for the whole site*/
+    display: grid;
+    place-items: center; /* Centers both horizontally and vertically */
+    height: 50vh;
+}
+#main_section {
+    text-align: center;
+}
+.logincontainer {
+    display: grid;
+    place-items: center; /* Centers both horizontally and vertically */
+}
+
+.registercontainer {
+    display: grid;
+    place-items: center; /* Centers both horizontally and vertically */
+}
+.userCredentials {
+    display: grid;
+    place-items: center; /* Centers both horizontally and vertically */
+}
