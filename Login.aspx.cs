@@ -23,7 +23,7 @@ namespace Food_Donor_Management_System
             string email = txtEmail.Text;
             string passwordHash = HashPassword(txtPassword.Text);
 
-            string query = $"SELECT ID,Role FROM Users WHERE Email = '{email}' AND PasswordHash = '{passwordHash}'";
+            string query = $"SELECT ID,Name,Role FROM Users WHERE Email = '{email}' AND PasswordHash = '{passwordHash}'";
             DataTable dt = DatabaseHelper.ExecuteQuery(query);
 
             if (dt.Rows.Count > 0)
@@ -31,6 +31,8 @@ namespace Food_Donor_Management_System
                 // work on this tom
                 string role = dt.Rows[0]["Role"].ToString();
                 string id = dt.Rows[0]["ID"].ToString();
+                string name = dt.Rows[0]["Name"].ToString();
+                Session["Username"] = name;
                 Session["UserRole"] = role;
                 Session["UserEmail"] = email;
                 Session["UserID"] = id;

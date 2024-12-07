@@ -11,6 +11,7 @@
             <asp:ListItem Text="Select Role" Value="" />
             <asp:ListItem Text="Donor" Value="Donor" />
             <asp:ListItem Text="Recipient" Value="Recipient" />
+            <asp:ListItem Text="Admin" Value="Admin" />
         </asp:DropDownList>
 
           <div id="userCredentials" class="personalCredentials" style="display: none;">
@@ -33,6 +34,8 @@
             if(role === 'Donor') {
                 document.getElementById('userCredentials').style.display = 'block';
             } else if (role === 'Recipient') {
+                document.getElementById('userCredentials').style.display = 'block';
+            } else if (role === 'Admin') {
                 document.getElementById('userCredentials').style.display = 'block';
             }
         }

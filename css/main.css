@@ -20,3 +20,15 @@
     display: grid;
     place-items: center; /* Centers both horizontally and vertically */
 }
+.custom-navbar {
+    background-color: #CBC3E3; /* Custom background color */
+    color: white;
+}
+
+    .custom-navbar .nav-link {
+        color: white; /* Make sure links are visible */
+    }
+
+        .custom-navbar .nav-link:hover {
+            color: #ffc107; /* Change link color on hover */
+        }

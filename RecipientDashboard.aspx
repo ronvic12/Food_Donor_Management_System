@@ -1,6 +1,6 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="RecipientDashboard.aspx.cs" Inherits="Food_Donor_Management_System.RecipientDashboard" %>
+﻿<%@ Page Title ="Recipient" Language="C#" MasterPageFile="~/Dashboards.Master" AutoEventWireup="true" CodeBehind="RecipientDashboard.aspx.cs" Inherits="Food_Donor_Management_System.RecipientDashboard" %>
 
-<asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
+<asp:Content ID="BodyContent" ContentPlaceHolderID="DashboardContent" runat="server">
 
     <h2>Available Food Items</h2>
 <asp:GridView ID="gvAvailableFood" runat="server" AutoGenerateColumns="False" OnRowCommand="gvAvailableFood_RowCommand">

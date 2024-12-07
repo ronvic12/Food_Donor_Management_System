@@ -1,6 +1,6 @@
-﻿<%@ Page Title="DonorDashboard" Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master"  CodeBehind="DonorDashboard.aspx.cs" Inherits="Food_Donor_Management_System.DonorDashboard" %>
+﻿<%@ Page Title="DonorDashboard" Language="C#" AutoEventWireup="true" MasterPageFile="~/Dashboards.Master"  CodeBehind="DonorDashboard.aspx.cs" Inherits="Food_Donor_Management_System.DonorDashboard" %>
 
-<asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
+<asp:Content ID="BodyContent" ContentPlaceHolderID="DashboardContent" runat="server">
     <h2>Donate Food</h2>
 
     <asp:TextBox ID="txtFoodName" runat="server" Placeholder="Food Name"></asp:TextBox>

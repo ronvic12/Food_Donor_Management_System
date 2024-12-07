@@ -11,7 +11,19 @@ namespace Food_Donor_Management_System
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsPostBack)
+            {
+                // Set username dynamically, e.g., from Session
+                lblUsername.Text = Session["Username"]?.ToString() ?? "Guest";
+            }
+        }
 
+        protected void lnkLogout_Click(object sender, EventArgs e)
+        {
+            // Clear the session and redirect to the login page
+            Session.Clear();
+            Session.Abandon();
+            Response.Redirect("~/Login.aspx");
         }
     }
 }
