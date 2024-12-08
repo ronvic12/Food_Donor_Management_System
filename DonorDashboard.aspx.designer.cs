@@ -15,6 +15,15 @@ namespace Food_Donor_Management_System
     {
 
         /// <summary>
+        /// ddlCategories control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlCategories;
+
+        /// <summary>
         /// txtFoodName control.
         /// </summary>
         /// <remarks>
@@ -22,6 +31,15 @@ namespace Food_Donor_Management_System
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtFoodName;
+
+        /// <summary>
+        /// txtQuantity control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtQuantity;
 
         /// <summary>
         /// txtDescription control.
@@ -42,6 +60,15 @@ namespace Food_Donor_Management_System
         protected global::System.Web.UI.WebControls.TextBox txtExpiryDate;
 
         /// <summary>
+        /// txtdropoffDateTime control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtdropoffDateTime;
+
+        /// <summary>
         /// btnAddFood control.
         /// </summary>
         /// <remarks>
@@ -51,12 +78,12 @@ namespace Food_Donor_Management_System
         protected global::System.Web.UI.WebControls.Button btnAddFood;
 
         /// <summary>
-        /// gvDonatedFood control.
+        /// lblMessage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvDonatedFood;
+        protected global::System.Web.UI.WebControls.Label lblMessage;
     }
 }

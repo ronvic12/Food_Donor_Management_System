@@ -25,8 +25,16 @@ namespace Food_Donor_Management_System
             string passwordHash = HashPassword(txtPassword.Text);
             string role = ddlRole.SelectedValue;
 
-            string query = $"INSERT INTO Users (Name, Email, PasswordHash, Role) VALUES ('{name}', '{email}', '{passwordHash}', '{role}')";
-            DatabaseHelper.ExecuteNonQuery(query);
+            string query = $"INSERT INTO Users (Name, Email, PasswordHash, Role) VALUES (@Name, @Email, @PasswordHash, @Role)";
+
+            var parameters = new Dictionary<string, object>
+            {
+                {"@Name", name},
+                {"@Email",email },
+                {"@PasswordHash",passwordHash },
+                {"@Role" ,role}
+            };
+            DatabaseHelper.ExecuteNonQuery(query,parameters);
 
             lblMessage.Text = "Registration successful!"; //add a hyperlink to route back to Login Page
         }

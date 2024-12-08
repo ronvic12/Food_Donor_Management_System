@@ -1,4 +1,5 @@
 ﻿using Food_Donor_Management_System.Helpers;
+using Org.BouncyCastle.Cms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,11 +34,29 @@ namespace Food_Donor_Management_System
                 int foodItemID = Convert.ToInt32(gvAvailableFood.DataKeys[Convert.ToInt32(e.CommandArgument)].Value);
                 int recipientID = GetLoggedInUserID();
 
-                string query = $"INSERT INTO Requests (FoodItemID, RecipientID) VALUES ({foodItemID}, {recipientID})";
-                DatabaseHelper.ExecuteNonQuery(query);
 
-                string updateQuery = $"UPDATE FoodItems SET Status = 'Reserved' WHERE ID = {foodItemID}";
-                DatabaseHelper.ExecuteNonQuery(updateQuery);
+                // Use parameterized query to prevent SQL injection
+               string query = $"INSERT INTO Requests (FoodItemID, RecipientID) VALUES (@FoodItemID, @RecipientID)";
+
+                var insertParams = new Dictionary<string, object>
+                {
+                    {"@FoodItemID",foodItemID },
+                    { "@RecipientID",recipientID}
+                };
+
+
+                
+                DatabaseHelper.ExecuteNonQuery(query,insertParams);
+
+                string updateQuery = $"UPDATE FoodItems SET Status = '@Status' WHERE ID = @FoodItemID";
+
+
+                var updateParams = new Dictionary<string, object>
+                {
+                    {"@Status","Reserved" },
+                    { "@FoodItemID",foodItemID}
+                };
+                DatabaseHelper.ExecuteNonQuery(updateQuery,updateParams);
 
                 LoadAvailableFood();
             }

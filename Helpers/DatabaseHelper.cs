@@ -28,13 +28,22 @@ namespace Food_Donor_Management_System.Helpers
 
 
         // Use for non-retrieval operations in databases:Insert,Update,Delete
-        public static void ExecuteNonQuery(string query)
+        // add another parameter to accept dictionary so that it can use parameterized queries.
+        public static void ExecuteNonQuery(string query, Dictionary<string, object> parameters)
         {
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
-                conn.Open();
-                MySqlCommand cmd = new MySqlCommand(query, conn);
-                cmd.ExecuteNonQuery();
+                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                {
+
+                    foreach (var param in parameters) 
+                    {
+                        cmd.Parameters.AddWithValue(param.Key, param.Value);
+                    }
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+              
             }
         }
     }
