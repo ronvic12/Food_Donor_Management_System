@@ -37,6 +37,8 @@
             // Submit the form
             __doPostBack('', 'SubmitDecision');
         }
+
+        // consider refactor code later, to be more efficient and readable
         function showFoodDetails(foodItemsJSON) {
 
             const foodItems = JSON.parse(foodItemsJSON);
@@ -108,6 +110,37 @@
           
             // Append the table to the container
             container.appendChild(table);
+        }
+        function showInventory(inventoryJSON) {
+            const inventory = JSON.parse(inventoryJSON);
+            console.log(inventory);
+            // Get the container for food details
+            const container = document.getElementById("inventoryDetailsContainer");
+            // Clear previous content
+            while (container.firstChild) {
+                container.removeChild(container.firstChild);
+            }
+
+            // using DOM elements to create a inventory detail
+
+            // Create and append details dynamically, inventory uses first child only, since that only matters
+            const fields = [
+                { label: "Food Category", value: inventory[0].InventoryFoodCategory },
+                { label: "Food Name", value: inventory[0].InventoryFoodName },
+                { label: "Description", value: inventory[0].InventoryDescription },
+                { label: "Quantity", value: inventory[0].InventoryQuantity },
+                { label: "Expiration Date", value: new Date(inventory[0].InventoryExpirationDate).toLocaleDateString() }
+            ];
+
+            fields.forEach(field => {
+                const paragraph = document.createElement("p");
+                const boldLabel = document.createElement("strong");
+                boldLabel.textContent = `${field.label}: `;
+                paragraph.appendChild(boldLabel);
+                paragraph.appendChild(document.createTextNode(field.value));
+                container.appendChild(paragraph);
+            });
+
         }
     </script>
 
@@ -185,17 +218,43 @@
             <div class ="dashboard_table">
                             <asp:Panel ID="pnlInventoryDashboard" runat="server" Width="100%">
                         <h2 style="text-align: center;">Inventory Dashboard</h2>
-
                       <div id="inventoryContainer">
                           <div class="inventoryGroup">
                               <h3 class="available">Available</h3>
                               <asp:Repeater ID="rptInventory" runat="server">
                                   <ItemTemplate>
                                 <div class="inventory">
-                                     <h3><%# Eval("InventoryQuantity") %>  <%# Eval("InventoryFoodName") %></h3>
+                                     <h3><%# Eval("InventoryQuantity") %>  <%# Eval("InventoryFoodCategory") %></h3>
+
+                                       <button type="button" 
+                                           class="btn btn-info" 
+                                           data-toggle="modal" 
+                                           data-target="#inventoryDetailsModal"
+                                           onclick="showInventory('<%# Server.HtmlEncode(Eval("SerializedInventory").ToString()) %>')">  <!-- To ensure protection in html coding and json read it as string -->
+                                           View Inventory
+                                       </button>
                                 </div>
                                       </ItemTemplate>
                               </asp:Repeater>
+
+                                       <!-- Modal Structure -->
+                             <div class="modal fade" id="inventoryDetailsModal" tabindex="-1" aria-labelledby="inventoryDetailsLabel" aria-hidden="true">
+                                  <div class="modal-dialog">
+                                      <div class="modal-content">
+                                          <div class="modal-header">
+                                             <h5 class="modal-title" id="inventoryDetailsLabel"></h5>
+                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                         </div>
+                                           <div class="modal-body">
+                                             <!-- This is where the food details will be populated dynamically -->
+                                             <div id="inventoryDetailsContainer"></div>
+                                          </div>
+                                          <div class="modal-footer">
+                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                         </div>
+                                       </div>
+                                    </div>
+                               </div>
                           </div>
                       </div>
             </asp:Panel>

@@ -178,8 +178,8 @@ namespace Food_Donor_Management_System
                INNER JOIN  
                          foodcategories fc ON fi.CategoryID = fc.ID
                 WHERE fi.Status = @status";
-            // Create a dictionary to hold parameters
-            //Debug.WriteLine(FoodStatus.Available.ToString());
+ 
+            // using Parameter queries, to avoid injection
             var parameters = new Dictionary<string, object>
             {
                 { "@status", FoodStatus.Available.ToString() }
@@ -189,12 +189,14 @@ namespace Food_Donor_Management_System
 
             var groupavailabledata = availableresult.AsEnumerable()
                               .GroupBy(row => new
-                              {
+                              { // need food name since because so that inventory has differentiation of names under same category
+                                  InventoryFoodCategory = row["InventoryFoodCategory"],
                                   InventoryFoodName = row["InventoryFoodName"],
                                   InventoryQuantity = row["InventoryQuantity"],
                                   InventoryExpirationDate = row["InventoryExpirationDate"]
                               }).Select(group => new
                               {
+                                  InventoryFoodCategory = group.Key.InventoryFoodCategory,
                                   InventoryFoodName = group.Key.InventoryFoodName,
                                   InventoryQuantity = group.Key.InventoryQuantity,
                                   InventoryExpirationDate = group.Key.InventoryExpirationDate,
@@ -207,8 +209,21 @@ namespace Food_Donor_Management_System
                                       InventoryExpirationDate = item["InventoryExpirationDate"],
                                       InventoryFoodItemID = item["InventoryFoodItemID"],
                                       InventoryStatus = item["InventoryStatus"]
-                                  })  // to ensure it serializes into JSON
-                              });
+                                  }).ToList(),  // to ensure it serializes into JSON
+                                      
+                                  // Serialize Inventory as JSON and pass it to the UI
+                                  SerializedInventory = JsonConvert.SerializeObject(group.Select(item => new
+                                  {
+                                      InventoryFoodCategory = item["InventoryFoodCategory"],
+                                      InventoryFoodName = item["InventoryFoodName"],
+                                      InventoryDescription = item["InventoryDescription"],
+                                      InventoryQuantity = item["InventoryQuantity"],
+                                      InventoryExpirationDate = item["InventoryExpirationDate"],
+                                      InventoryFoodItemID = item["InventoryFoodItemID"],
+                                      InventoryStatus = item["InventoryStatus"]
+                                  }).ToList())
+                              })
+                              .ToList();
 
             rptInventory.DataSource = groupavailabledata;
             rptInventory.DataBind();
