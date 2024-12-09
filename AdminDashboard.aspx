@@ -1,6 +1,9 @@
 ﻿<%@ Page Language="C#"  MasterPageFile="~/Admin.Master" AutoEventWireup="true" CodeBehind="AdminDashboard.aspx.cs" Inherits="Food_Donor_Management_System.AdminDashboard" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="AdminContent" runat="server">
+        <!-- Hidden Fields for Submitting Food Item Decision -->
+        <asp:HiddenField ID="FoodItemID" runat="server" />
+        <asp:HiddenField ID="Decision" runat="server" />
 
             <!-- Include Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -11,11 +14,32 @@
         <!-- Include Bootstrap JS -->
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
+        // Helper function to format the date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString(); // Formats the date to a local format, e.g., "12/8/2024"
+        }
+        // Function to update the food item's status
+          function submitDecision(foodItemID, decision) {
+            // Get hidden fields by their ASP.NET generated Client IDs
+            document.getElementById('<%= FoodItemID.ClientID %>').value = foodItemID;
+            document.getElementById('<%= Decision.ClientID %>').value = decision;
+
+           var statusElement = document.getElementById("status_" + foodItemID);
+            if (statusElement) {
+                if (decision === "Approve") {
+                    statusElement.textContent = "Available";  // Update status to Available
+                } else if (decision === "Reject") {
+                    statusElement.textContent = "Rejected";  // Update status to Rejected
+                }
+            }
+
+            // Submit the form
+            __doPostBack('', 'SubmitDecision');
+        }
         function showFoodDetails(foodItemsJSON) {
 
-            console.log(foodItemsJSON);
             const foodItems = JSON.parse(foodItemsJSON);
-            console.log(foodItems);
             // Get the container for food details
             const container = document.getElementById("foodDetailsContainer");
             // Clear previous content
@@ -29,7 +53,7 @@
 
             // Create the table header
             const headerRow = document.createElement("tr");
-            const headers = ["Category", "Name", "Description", "Quantity", "Expiration Date", "Approved/Reject FoodItem?"];
+            const headers = ["Category", "Name", "Description", "Quantity", "Expiration Date", "Status","Approved/Reject FoodItem?"];
             headers.forEach(headerText => {
                 const th = document.createElement("th");
                 th.textContent = headerText;
@@ -51,7 +75,8 @@
                     item.FoodName,
                     item.Description,
                     item.Quantity,
-                    item.ExpirationDate
+                    formatDate(item.ExpirationDate),
+                    item.Status
                 ];
 
                 values.forEach(value => {
@@ -61,10 +86,26 @@
                     td.style.padding = "8px";
                     row.appendChild(td);
                 });
+                
+                // Approve/Reject Buttons
+                  const actionTd = document.createElement("td");
+                  const approveButton = document.createElement("button");
+                  approveButton.textContent = "Approve";
+                  approveButton.style.marginRight = "5px";
+                  approveButton.onclick = () => submitDecision(item.FoodItemID, "Approve");
 
+                  const rejectButton = document.createElement("button");
+                  rejectButton.textContent = "Reject";
+                  rejectButton.onclick = () => submitDecision(item.FoodItemID, "Reject");
+
+                  actionTd.appendChild(approveButton);
+                  actionTd.appendChild(rejectButton);
+
+                row.appendChild(actionTd);
                 table.appendChild(row);
             });
-
+                   
+          
             // Append the table to the container
             container.appendChild(table);
         }
@@ -90,6 +131,7 @@
                                        onclick="showFoodDetails('<%# Server.HtmlEncode(Eval("SerializedFoodItems").ToString()) %>')">  <!-- To ensure protection in html coding and json read it as string -->
                                        View Food Details
                                    </button>
+
                             </div>
                              </ItemTemplate>
                         </asp:Repeater>  
@@ -114,11 +156,9 @@
                       </div>
                     </div>
                 </div>
-
-                  
                 </asp:Panel>
-
             </div>
+
        
             <div class ="dashboard_table">
                     <asp:Panel ID="pnlRecipientDashboard" runat="server" Width="100%">

@@ -15,6 +15,24 @@ namespace Food_Donor_Management_System
     {
 
         /// <summary>
+        /// FoodItemID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField FoodItemID;
+
+        /// <summary>
+        /// Decision control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField Decision;
+
+        /// <summary>
         /// pnlDonorDashboard control.
         /// </summary>
         /// <remarks>

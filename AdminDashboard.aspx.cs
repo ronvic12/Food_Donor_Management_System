@@ -1,12 +1,16 @@
 ﻿using Food_Donor_Management_System.Helpers;
 using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
+using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Xml.Linq;
 using static Mysqlx.Expect.Open.Types;
 
 namespace Food_Donor_Management_System
@@ -17,16 +21,56 @@ namespace Food_Donor_Management_System
         {
             if (!IsPostBack)
             {
+                // Load appointments on the first load
                 LoadDropOffAppointments();
             }
-        }
-        protected void btnDate_Click(object sender, EventArgs e)
-        {
-            // Handle button click (if needed)
-            // For example, you can show a message or log the date
-            Response.Write("Button clicked for today's date!");
+            else
+            {
+                // Handle postback arguments for actions like Approve/Reject
+                string eventArgument = Request["__EVENTARGUMENT"];
+                if (eventArgument == "SubmitDecision")
+                {
+                    // Retrieve values from hidden fields
+                    string foodItemID = FoodItemID.Value; // Hidden field for FoodItemID
+                    string decision = Decision.Value;     // Hidden field for Approve/Reject
+
+                    // Process the decision
+                    if (!string.IsNullOrEmpty(foodItemID) && !string.IsNullOrEmpty(decision))
+                    {
+                        if (decision == "Approve")
+                        {
+                            decision = "Available";
+                            Debug.WriteLine(decision, foodItemID);
+                            int num_foodItemID = Convert.ToInt32(foodItemID);
+                            UpdateDecisionStatusFoodItem(decision, num_foodItemID);
+                        }
+                        else if (decision == "Reject")
+                        {
+                            decision = "Rejected";
+                            Debug.WriteLine(decision, foodItemID);
+                            int num_foodItemID = Convert.ToInt32(foodItemID);
+                            UpdateDecisionStatusFoodItem(decision, num_foodItemID);
+                        }
+
+                        // Reload appointments to reflect the updated data
+                        LoadDropOffAppointments();
+                    }
+                }
+            }
         }
 
+        private void UpdateDecisionStatusFoodItem(string decision, int foodItemID) 
+        {
+               string updateQuery = @" UPDATE FoodItems
+                                       SET Status = @Status
+                                       WHERE ID = @FoodItemID";
+              var updateparameters = new Dictionary<string, object>
+                {
+                    {"@Status", decision},
+                    {"@FoodItemID",foodItemID }
+                };
+              DatabaseHelper.ExecuteNonQuery(updateQuery, updateparameters);
+        }
 
         private void LoadDropOffAppointments()
         {
@@ -34,6 +78,7 @@ namespace Food_Donor_Management_System
             string query = @"
             SELECT 
              u.Name AS DonorName,
+            fi.ID as FoodItemID,
             fc.Name AS FoodCategory,
             fi.Name AS FoodName,
             fi.Description,
@@ -70,7 +115,9 @@ namespace Food_Donor_Management_System
                                       FoodName = item["FoodName"],
                                       Description = item["Description"],
                                       Quantity = item["Quantity"],
-                                      ExpirationDate = item["ExpirationDate"]
+                                      ExpirationDate = item["ExpirationDate"],
+                                      FoodItemID = item["FoodItemID"],
+                                      Status = item["Status"]
                                   }).ToList(),  // to ensure it serializes into JSON
 
                                   // Serialize the FoodItems as JSON and pass it to the UI
@@ -80,8 +127,10 @@ namespace Food_Donor_Management_System
                                        FoodName = item["FoodName"],
                                        Description = item["Description"],
                                        Quantity = item["Quantity"],
-                                       ExpirationDate = item["ExpirationDate"]
-                                   }).ToList())
+                                       ExpirationDate = item["ExpirationDate"],
+                                       FoodItemID = item["FoodItemID"],
+                                      Status = item["Status"]
+                                  }).ToList())
                               })
                               .ToList();// Ensure grouping is executed before serializing to JSON
       
@@ -98,6 +147,10 @@ namespace Food_Donor_Management_System
             }
         }
 
+        protected void rptTodayAppointments_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+
+        }
     }
 }
 
@@ -140,3 +193,27 @@ namespace Food_Donor_Management_System
                          $"Rejected Requests: {dt.Rows[0]["RejectedRequests"]}";
      }
  }*/
+
+
+/*string jsonData;
+                using (var reader = new System.IO.StreamReader(Request.InputStream))
+                {
+                    jsonData = reader.ReadToEnd();
+                }
+
+                // Log the raw JSON to help debug the issue
+               Console.WriteLine("This is JSON DATA "+ jsonData);
+
+                // Deserialize the JSON data into an object
+                var requestData = JsonConvert.DeserializeObject<RequestData>(jsonData);*/
+
+/*  int foodItemID = Convert.ToInt32(requestData.foodItemID);
+  string status = requestData.status;
+  string newStatus = (status == "Approve") ? "Available" : "Rejected";
+  // Update the status of the food item in the database
+
+
+  // Respond with success
+  Response.StatusCode = 200; // OK
+  Response.Write("Success");
+  Response.End(); // End the response here to avoid page load continuation*/
