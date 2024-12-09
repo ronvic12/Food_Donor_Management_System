@@ -8,7 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%: Page.Title %></title>
 
-
+      <asp:ContentPlaceHolder ID="AdminHeadContent" runat="server">
+    </asp:ContentPlaceHolder>
       <asp:PlaceHolder runat="server">
       <%: Scripts.Render("~/bundles/modernizr") %>
   </asp:PlaceHolder>

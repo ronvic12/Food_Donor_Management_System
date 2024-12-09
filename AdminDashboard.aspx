@@ -1,6 +1,75 @@
 ﻿<%@ Page Language="C#"  MasterPageFile="~/Admin.Master" AutoEventWireup="true" CodeBehind="AdminDashboard.aspx.cs" Inherits="Food_Donor_Management_System.AdminDashboard" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="AdminContent" runat="server">
+
+            <!-- Include Bootstrap CSS -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Include jQuery (needed for Bootstrap 4 modals) -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
+        <!-- Include Bootstrap JS -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function showFoodDetails(foodItemsJSON) {
+
+            console.log(foodItemsJSON);
+            const foodItems = JSON.parse(foodItemsJSON);
+            console.log(foodItems);
+            // Get the container for food details
+            const container = document.getElementById("foodDetailsContainer");
+            // Clear previous content
+            container.innerHTML = "";
+
+            // Create a table element
+            const table = document.createElement("table");
+            table.style.borderCollapse = "collapse";
+            table.style.width = "100%";
+
+
+            // Create the table header
+            const headerRow = document.createElement("tr");
+            const headers = ["Category", "Name", "Description", "Quantity", "Expiration Date", "Approved/Reject FoodItem?"];
+            headers.forEach(headerText => {
+                const th = document.createElement("th");
+                th.textContent = headerText;
+                th.style.border = "1px solid #ddd";
+                th.style.padding = "8px";
+                th.style.textAlign = "left";
+                th.style.backgroundColor = "#f2f2f2";
+                headerRow.appendChild(th);
+            });
+            table.appendChild(headerRow);
+
+
+            // Populate the table with food details
+            foodItems.forEach(item => {
+                const row = document.createElement("tr");
+
+                const values = [
+                    item.FoodCategory,
+                    item.FoodName,
+                    item.Description,
+                    item.Quantity,
+                    item.ExpirationDate
+                ];
+
+                values.forEach(value => {
+                    const td = document.createElement("td");
+                    td.textContent = value;
+                    td.style.border = "1px solid #ddd";
+                    td.style.padding = "8px";
+                    row.appendChild(td);
+                });
+
+                table.appendChild(row);
+            });
+
+            // Append the table to the container
+            container.appendChild(table);
+        }
+    </script>
+
     <div class="dashboard_container">
             <div class ="dashboard_table">
       
@@ -13,13 +82,40 @@
                     <asp:Repeater ID="rptTodayAppointments" runat="server">
                         <ItemTemplate>
                             <div class="appointment">
-                                <span class="donorName"><%# Eval("DonorName") %></span>
-                                <span class="appointmentTime"><%# Eval("AppointmentTime") %></span>
+                            <h3><%# Eval("DonorName") %> - <%# Eval("AppointmentTime", "{0:yyyy-MM-dd HH:mm}") %></h3>
+                                   <button type="button" 
+                                       class="btn btn-info" 
+                                       data-toggle="modal" 
+                                       data-target="#foodDetailsModal"
+                                       onclick="showFoodDetails('<%# Server.HtmlEncode(Eval("SerializedFoodItems").ToString()) %>')">  <!-- To ensure protection in html coding and json read it as string -->
+                                       View Food Details
+                                   </button>
                             </div>
-                        </ItemTemplate>
-                    </asp:Repeater>
+                             </ItemTemplate>
+                        </asp:Repeater>  
+                    
+                            <!-- Modal Structure -->
+                    <div class="modal fade" id="foodDetailsModal" tabindex="-1" aria-labelledby="foodDetailsLabel" aria-hidden="true">
+                         <div class="modal-dialog">
+                             <div class="modal-content">
+                                 <div class="modal-header">
+                                    <h5 class="modal-title" id="foodDetailsLabel">Food Details</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                  <div class="modal-body">
+                                    <!-- This is where the food details will be populated dynamically -->
+                                    <div id="foodDetailsContainer"></div>
+                                 </div>
+                                 <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                              </div>
+                           </div>
+                      </div>
+                    </div>
                 </div>
-            </div>
+
+                  
                 </asp:Panel>
 
             </div>

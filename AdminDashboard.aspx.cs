@@ -1,4 +1,5 @@
 ﻿using Food_Donor_Management_System.Helpers;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using static Mysqlx.Expect.Open.Types;
 
 namespace Food_Donor_Management_System
 {
@@ -15,17 +17,8 @@ namespace Food_Donor_Management_System
         {
             if (!IsPostBack)
             {
+                LoadDropOffAppointments();
             }
-            /*    // Example data source
-                var appointments = new List<Appointment>
-                    {
-                        new Appointment { AppointmentName = "Meeting", AppointmentTime = DateTime.Now.AddHours(1) },
-                        new Appointment { AppointmentName = "Checkup", AppointmentTime = DateTime.Now.AddHours(2) }
-                    };
-
-                gvAppt.DataSource = appointments;
-                gvAppt.DataBind();
-            }*/
         }
         protected void btnDate_Click(object sender, EventArgs e)
         {
@@ -34,12 +27,69 @@ namespace Food_Donor_Management_System
             Response.Write("Button clicked for today's date!");
         }
 
-        public class Appointment
-        {
-            public string AppointmentName { get; set; }
-            public DateTime AppointmentTime { get; set; }
-        }
 
+        private void LoadDropOffAppointments()
+        {
+            // CAST(GETDATE() AS DATE) to get today's date and future date of appointments
+            string query = @"
+            SELECT 
+             u.Name AS DonorName,
+            fc.Name AS FoodCategory,
+            fi.Name AS FoodName,
+            fi.Description,
+            fi.Quantity,
+            fi.ExpiryDate AS ExpirationDate,
+            fi.Status,
+            fi.DropOffDateTime AS AppointmentTime
+        FROM 
+            FoodItems fi
+        INNER JOIN 
+            Users u ON fi.DonorID = u.ID
+        INNER JOIN 
+            FoodCategories fc ON fi.CategoryID = fc.ID
+        WHERE
+            fi.DropOffDateTime >= CURDATE()  
+        ORDER BY
+            fi.DropOffDateTime ";
+
+            // Implementing LINQ Structure because the data needs to be shown in front end is group hierarchally. 
+            var result = DatabaseHelper.ExecuteQuery(query);
+            // Group data by DonorName and AppointmentTime
+            var groupedData = result.AsEnumerable()
+                              .GroupBy(row => new
+                              {
+                                  DonorName = row["DonorName"],
+                                  AppointmentTime = row["AppointmentTime"]
+                              }).Select(group => new
+                              {
+                                  DonorName = group.Key.DonorName,
+                                  AppointmentTime = group.Key.AppointmentTime,
+                                  FoodItems = group.Select(item => new
+                                  {
+                                      FoodCategory = item["FoodCategory"],
+                                      FoodName = item["FoodName"],
+                                      Description = item["Description"],
+                                      Quantity = item["Quantity"],
+                                      ExpirationDate = item["ExpirationDate"]
+                                  }).ToList(),  // to ensure it serializes into JSON
+
+                                  // Serialize the FoodItems as JSON and pass it to the UI
+                                  SerializedFoodItems = JsonConvert.SerializeObject(group.Select(item => new
+                                   {
+                                       FoodCategory = item["FoodCategory"],
+                                       FoodName = item["FoodName"],
+                                       Description = item["Description"],
+                                       Quantity = item["Quantity"],
+                                       ExpirationDate = item["ExpirationDate"]
+                                   }).ToList())
+                              })
+                              .ToList();// Ensure grouping is executed before serializing to JSON
+      
+            // Now, if you want to bind the data to the DataSource, you can continue to use DataBind
+            rptTodayAppointments.DataSource = groupedData;
+            rptTodayAppointments.DataBind();
+
+        }
         public string TodayDate
         {
             get

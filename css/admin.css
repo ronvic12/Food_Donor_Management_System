@@ -11,3 +11,14 @@
     border: 1px solid #ccc; /* Styling for the tables */
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Add some shadow for visual appeal */
 }
+.appointment {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ddd;
+}
+
+    .appointment span {
+        margin-right: 10px;
+        white-space: nowrap;
+    }
