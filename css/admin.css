@@ -22,3 +22,15 @@
         margin-right: 10px;
         white-space: nowrap;
     }
+
+.inventory {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ddd;
+}
+
+    .inventory span {
+        margin-right: 10px;
+        white-space: nowrap;
+    }

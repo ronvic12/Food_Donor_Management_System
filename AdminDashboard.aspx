@@ -191,11 +191,10 @@
                               <h3 class="available">Available</h3>
                               <asp:Repeater ID="rptInventory" runat="server">
                                   <ItemTemplate>
-                                      <div class="inventory">
-                                          <span class="inventoryName"><%# Eval("DonorName") %></span>
-                                          <span class="inventoryFood"><%# Eval("AppointmentTime") %></span>
-                                      </div>
-                                  </ItemTemplate>
+                                <div class="inventory">
+                                     <h3><%# Eval("InventoryQuantity") %>  <%# Eval("InventoryFoodName") %></h3>
+                                </div>
+                                      </ItemTemplate>
                               </asp:Repeater>
                           </div>
                       </div>

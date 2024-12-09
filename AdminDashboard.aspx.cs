@@ -1,9 +1,11 @@
 ﻿using Food_Donor_Management_System.Helpers;
+using MySqlX.XDevAPI.Common;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using System.Web;
@@ -23,6 +25,7 @@ namespace Food_Donor_Management_System
             {
                 // Load appointments on the first load
                 LoadDropOffAppointments();
+                LoadAvailableFoodItems();
             }
             else
             {
@@ -59,17 +62,17 @@ namespace Food_Donor_Management_System
             }
         }
 
-        private void UpdateDecisionStatusFoodItem(string decision, int foodItemID) 
+        private void UpdateDecisionStatusFoodItem(string decision, int foodItemID)
         {
-               string updateQuery = @" UPDATE FoodItems
+            string updateQuery = @" UPDATE FoodItems
                                        SET Status = @Status
                                        WHERE ID = @FoodItemID";
-              var updateparameters = new Dictionary<string, object>
+            var updateparameters = new Dictionary<string, object>
                 {
                     {"@Status", decision},
                     {"@FoodItemID",foodItemID }
                 };
-              DatabaseHelper.ExecuteNonQuery(updateQuery, updateparameters);
+            DatabaseHelper.ExecuteNonQuery(updateQuery, updateparameters);
         }
 
         private void LoadDropOffAppointments()
@@ -122,18 +125,18 @@ namespace Food_Donor_Management_System
 
                                   // Serialize the FoodItems as JSON and pass it to the UI
                                   SerializedFoodItems = JsonConvert.SerializeObject(group.Select(item => new
-                                   {
-                                       FoodCategory = item["FoodCategory"],
-                                       FoodName = item["FoodName"],
-                                       Description = item["Description"],
-                                       Quantity = item["Quantity"],
-                                       ExpirationDate = item["ExpirationDate"],
-                                       FoodItemID = item["FoodItemID"],
+                                  {
+                                      FoodCategory = item["FoodCategory"],
+                                      FoodName = item["FoodName"],
+                                      Description = item["Description"],
+                                      Quantity = item["Quantity"],
+                                      ExpirationDate = item["ExpirationDate"],
+                                      FoodItemID = item["FoodItemID"],
                                       Status = item["Status"]
                                   }).ToList())
                               })
                               .ToList();// Ensure grouping is executed before serializing to JSON
-      
+
             // Now, if you want to bind the data to the DataSource, you can continue to use DataBind
             rptTodayAppointments.DataSource = groupedData;
             rptTodayAppointments.DataBind();
@@ -147,9 +150,68 @@ namespace Food_Donor_Management_System
             }
         }
 
+        
+
         protected void rptTodayAppointments_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
 
+        }
+        public enum FoodStatus
+        {
+            Available
+        }
+
+        // This is for Inventory
+        private void LoadAvailableFoodItems()
+        {
+            string loadquery = @" 
+                        SELECT 
+                        fi.ID as InventoryFoodItemID, 
+                         fc.Name AS InventoryFoodCategory,
+                         fi.Name AS InventoryFoodName,
+                         fi.Description as InventoryDescription,
+                         fi.Quantity as InventoryQuantity,
+                         fi.ExpiryDate AS InventoryExpirationDate,
+                         fi.Status as InventoryStatus 
+                   FROM 
+                        fooditems fi 
+               INNER JOIN  
+                         foodcategories fc ON fi.CategoryID = fc.ID
+                WHERE fi.Status = @status";
+            // Create a dictionary to hold parameters
+            //Debug.WriteLine(FoodStatus.Available.ToString());
+            var parameters = new Dictionary<string, object>
+            {
+                { "@status", FoodStatus.Available.ToString() }
+            };
+            // Implementing LINQ Structure because the data needs to be shown in front end is group hierarchally. 
+            var availableresult = DatabaseHelper.ExecuteQuery(loadquery,parameters);
+
+            var groupavailabledata = availableresult.AsEnumerable()
+                              .GroupBy(row => new
+                              {
+                                  InventoryFoodName = row["InventoryFoodName"],
+                                  InventoryQuantity = row["InventoryQuantity"],
+                                  InventoryExpirationDate = row["InventoryExpirationDate"]
+                              }).Select(group => new
+                              {
+                                  InventoryFoodName = group.Key.InventoryFoodName,
+                                  InventoryQuantity = group.Key.InventoryQuantity,
+                                  InventoryExpirationDate = group.Key.InventoryExpirationDate,
+                                  InventoryFoodItems = group.Select(item => new
+                                  {
+                                      InventoryFoodCategory = item["InventoryFoodCategory"],
+                                      InventoryFoodName = item["InventoryFoodName"],
+                                      InventoryDescription = item["InventoryDescription"],
+                                      InventoryQuantity = item["InventoryQuantity"],
+                                      InventoryExpirationDate = item["InventoryExpirationDate"],
+                                      InventoryFoodItemID = item["InventoryFoodItemID"],
+                                      InventoryStatus = item["InventoryStatus"]
+                                  })  // to ensure it serializes into JSON
+                              });
+
+            rptInventory.DataSource = groupavailabledata;
+            rptInventory.DataBind();
         }
     }
 }
