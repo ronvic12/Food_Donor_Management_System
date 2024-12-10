@@ -1,6 +1,7 @@
 ﻿using Food_Donor_Management_System.Helpers;
 using MySqlX.XDevAPI.Common;
 using Newtonsoft.Json;
+using Org.BouncyCastle.Cms;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,7 +23,10 @@ namespace Food_Donor_Management_System
         public enum FoodStatus
         {
             Available,
-            Requested
+            Requested,
+            Reserved,
+            Shipped,
+            Claimed
         }
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -32,6 +36,7 @@ namespace Food_Donor_Management_System
                 LoadDropOffAppointments();
                 LoadAvailableFoodItems();
                 LoadRecipientRequests();
+                LoadDeliveryProcess();
             }
             else
             {
@@ -49,14 +54,12 @@ namespace Food_Donor_Management_System
                         if (decision == "Approve")
                         {
                             decision = "Available";
-                            Debug.WriteLine(decision, foodItemID);
                             int num_foodItemID = Convert.ToInt32(foodItemID);
                             UpdateDecisionStatusFoodItem(decision, num_foodItemID);
                         }
                         else if (decision == "Reject")
                         {
                             decision = "Rejected";
-                            Debug.WriteLine(decision, foodItemID);
                             int num_foodItemID = Convert.ToInt32(foodItemID);
                             UpdateDecisionStatusFoodItem(decision, num_foodItemID);
                         }
@@ -65,6 +68,43 @@ namespace Food_Donor_Management_System
                         LoadDropOffAppointments();
                     }
                 }
+
+                    // different argument 
+
+                    if (eventArgument == "ApproveOrDenyRequest") 
+                    {
+                        // Retrieve values from hidden fields
+                        string requestfooditemID = RequestFoodItemID.Value; // Hidden field for FoodItemID
+                        string requestrecipientID = RequestRecipientID.Value;
+                        string requestdecision = RequestDecision.Value;     // Hidden field for Approve/Reject
+
+
+                        if (!string.IsNullOrEmpty(requestfooditemID) && !string.IsNullOrEmpty(requestrecipientID) && !string.IsNullOrEmpty(requestdecision))
+                        {
+                            if (requestdecision == "Approve")
+                            {
+                                string fooditemDecision = "Reserved";
+                                requestdecision = "Approved";
+                                int num_foodItemID = Convert.ToInt32(requestfooditemID);
+                                int num_requestrecipientID = Convert.ToInt32(requestrecipientID);
+                                UpdateDecisionStatusFoodItem(fooditemDecision, num_foodItemID);
+                                UpdateDecisionRequests(requestdecision, num_foodItemID, num_requestrecipientID);
+                            }
+                            else if (requestdecision == "Deny")
+                            {
+                                string fooditemDecision = "Available"; // bring it back to available
+                                requestdecision = "Rejected";
+                                int num_foodItemID = Convert.ToInt32(requestfooditemID);
+                                int num_requestrecipientID = Convert.ToInt32(requestrecipientID);
+                                UpdateDecisionStatusFoodItem(fooditemDecision, num_foodItemID);
+                                UpdateDecisionRequests(requestdecision, num_foodItemID, num_requestrecipientID);
+                            }
+
+                            // Reload appointments to reflect the updated data
+                            LoadRecipientRequests();
+                        }
+
+                    }
             }
         }
 
@@ -79,6 +119,21 @@ namespace Food_Donor_Management_System
                     {"@FoodItemID",foodItemID }
                 };
             DatabaseHelper.ExecuteNonQuery(updateQuery, updateparameters);
+        }
+
+        private void UpdateDecisionRequests(string decision, int foodItemID, int recipientID) 
+        {
+            string updateQuery = @" UPDATE Requests
+                                       SET Status = @Status
+                                       WHERE FoodItemID  = @FoodItemID AND RecipientID = @RecipientID";
+            var updateparameters = new Dictionary<string, object>
+                {
+                    {"@Status", decision},
+                    {"@FoodItemID",foodItemID },
+                    {"@RecipientID",recipientID }
+                };
+            DatabaseHelper.ExecuteNonQuery(updateQuery, updateparameters);
+
         }
 
         private void LoadDropOffAppointments()
@@ -231,6 +286,8 @@ namespace Food_Donor_Management_System
             string query = @"
                         SELECT 
                             u.Name AS RecipientName,
+                            fi.ID as FoodItemID,
+                            r.RecipientID,
                             fi.Name AS FoodItem,
                             fc.Name AS FoodCategory,
                             fi.Description,
@@ -280,7 +337,9 @@ namespace Food_Donor_Management_System
                                       Description = item["Description"],
                                       Quantity = item["Quantity"],
                                       ExpirationDate = item["ExpirationDate"],
-                                      FoodItemStatus = item["FoodItemStatus"]
+                                      FoodItemStatus = item["FoodItemStatus"],
+                                      FoodItemID = item["FoodItemID"],
+                                      RecipientID = item["RecipientID"]
                                   }).ToList(),  // to ensure it serializes into JSON
 
                                   // Serialize Inventory as JSON and pass it to the UI
@@ -292,12 +351,102 @@ namespace Food_Donor_Management_System
                                       Description = item["Description"],
                                       Quantity = item["Quantity"],
                                       ExpirationDate = item["ExpirationDate"],
-                                      FoodItemStatus = item["FoodItemStatus"]
+                                      FoodItemStatus = item["FoodItemStatus"],
+                                      FoodItemID = item["FoodItemID"],
+                                      RecipientID = item["RecipientID"]
                                   }).ToList())
                               })
                               .ToList();
             rptPendingRequests.DataSource = grouprecipientdata;
             rptPendingRequests.DataBind();
+        }
+
+
+
+
+        private void LoadDeliveryProcess() 
+        {
+
+            string query = @"
+                        SELECT 
+                            u.Name AS RecipientName,
+                            fi.ID as FoodItemID,
+                            r.RecipientID,
+                            fi.Name AS FoodItem,
+                            fc.Name AS FoodCategory,
+                            fi.Description,
+                            fi.Quantity,
+                            fi.ExpiryDate as ExpirationDate,
+                            fi.Status AS FoodItemStatus,
+                            r.Status AS RequestStatus
+                        FROM 
+                            Requests r
+                        INNER JOIN 
+                            FoodItems fi ON r.FoodItemID = fi.ID
+                        INNER JOIN 
+                            FoodCategories fc ON fi.CategoryID = fc.ID
+                        INNER JOIN 
+                            Users u ON r.RecipientID = u.ID
+                        WHERE
+                             fi.Status = @status";
+
+            var parameters = new Dictionary<string, object>
+            {
+                { "@status", FoodStatus.Reserved.ToString() }
+            };
+            // Implementing LINQ Structure because the data needs to be shown in front end is group hierarchally. 
+            var deliveryresult = DatabaseHelper.ExecuteQuery(query, parameters);
+
+
+            var groupdeliverydata = deliveryresult.AsEnumerable()
+                              .GroupBy(row => new
+                              { // need food name since because so that inventory has differentiation of names under same category
+                                  RecipientName = row["RecipientName"],
+                                  FoodCategory = row["FoodCategory"],
+                                  FoodItem = row["FoodItem"],
+                                  Quantity = row["Quantity"],
+                                  ExpirationDate = row["ExpirationDate"]
+                              }).Select(group => new
+                              {
+                                  RecipientName = group.Key.RecipientName,
+                                  FoodCategory = group.Key.FoodCategory,
+                                  FoodItem = group.Key.FoodItem,
+                                  Quantity = group.Key.Quantity,
+                                  ExpirationDate = group.Key.ExpirationDate,
+                                  RecipientItems = group.Select(item => new
+                                  {
+                                      RecipientName = item["RecipientName"],
+                                      FoodCategory = item["FoodCategory"],
+                                      FoodItem = item["FoodItem"],
+                                      Description = item["Description"],
+                                      Quantity = item["Quantity"],
+                                      ExpirationDate = item["ExpirationDate"],
+                                      FoodItemStatus = item["FoodItemStatus"],
+                                      FoodItemID = item["FoodItemID"],
+                                      RecipientID = item["RecipientID"]
+                                  }).ToList(),  // to ensure it serializes into JSON
+
+                                  // Serialize Inventory as JSON and pass it to the UI
+                                  SerializedDelivery = JsonConvert.SerializeObject(group.Select(item => new
+                                  {
+                                      RecipientName = item["RecipientName"],
+                                      FoodCategory = item["FoodCategory"],
+                                      FoodItem = item["FoodItem"],
+                                      Description = item["Description"],
+                                      Quantity = item["Quantity"],
+                                      ExpirationDate = item["ExpirationDate"],
+                                      FoodItemStatus = item["FoodItemStatus"],
+                                      FoodItemID = item["FoodItemID"],
+                                      RecipientID = item["RecipientID"]
+                                  }).ToList())
+                              })
+                              .ToList();
+            rptdonation.DataSource = groupdeliverydata;
+            rptdonation.DataBind();
+
+
+
+
         }
     }
 }

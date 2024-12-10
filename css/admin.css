@@ -47,3 +47,14 @@
         margin-right: 10px;
         white-space: nowrap;
     }
+
+.donation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ddd;
+}
+    .donation span {
+        margin-right: 10px;
+        white-space: nowrap;
+    }

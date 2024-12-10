@@ -5,6 +5,12 @@
         <asp:HiddenField ID="FoodItemID" runat="server" />
         <asp:HiddenField ID="Decision" runat="server" />
 
+        <!-- Hidden Fields for Submitting Approve or Deny Request -->
+        <asp:HiddenField ID="RequestFoodItemID" runat="server" />
+        <asp:HiddenField ID="RequestRecipientID" runat="server" />
+        <asp:HiddenField ID="RequestDecision" runat="server" />
+        
+
             <!-- Include Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
@@ -174,6 +180,7 @@
                 container.appendChild(paragraph);
             });
 
+
             // Create and append "Approve" and "Reject" buttons
             const buttonContainer = document.createElement("div");
             buttonContainer.style.marginTop = "10px"; // Optional: Adds space between details and buttons
@@ -181,16 +188,13 @@
             const approveButton = document.createElement("button");
             approveButton.textContent = "Approve Request";
             approveButton.classList.add("approve-btn"); // Optional: Add a CSS class for styling
-            approveButton.onclick = function () {
-                alert("Approved!"); // You can replace this with your desired functionality
-            };
+            approveButton.onclick = () => approveOrDenyRequest(recipients[0].FoodItemID, recipients[0].RecipientID, "Approve");
+                
 
             const rejectButton = document.createElement("button");
             rejectButton.textContent = "Deny Request";
             rejectButton.classList.add("reject-btn"); // Optional: Add a CSS class for styling
-            rejectButton.onclick = function () {
-                alert("Rejected!"); // You can replace this with your desired functionality
-            };
+            rejectButton.onclick = () => approveOrDenyRequest(recipients[0].FoodItemID, recipients[0].RecipientID, "Deny");
 
             // Append buttons to the button container
             buttonContainer.appendChild(approveButton);
@@ -198,9 +202,53 @@
 
             // Append the button container to the main container
             container.appendChild(buttonContainer);
-                
+        }
 
-         }
+        function showDelivery(deliveryJSON) {
+
+            const delivery = JSON.parse(deliveryJSON);
+            const container = document.getElementById("deliveryDetailsContainer");
+            // Clear previous content
+            while (container.firstChild) {
+                container.removeChild(container.firstChild);
+            }
+
+
+
+            // Create and append details dynamically, inventory uses first child only, since that only matters
+            const fields = [
+                { label: "To: ", value: delivery[0].RecipientName },
+                { label: "Food Category", value: delivery[0].FoodCategory },
+                { label: "Food Item", value: delivery[0].FoodItem },
+                { label: "Description", value: delivery[0].Description },
+                { label: "Quantity", value: delivery[0].Quantity },
+                { label: "Expiration Date", value: formatDate(delivery[0].ExpirationDate) },
+                { label: "Status", value: delivery[0].FoodItemStatus}
+            ];
+
+            fields.forEach(field => {
+                const paragraph = document.createElement("p");
+                const boldLabel = document.createElement("strong");
+                boldLabel.textContent = `${field.label}: `;
+                paragraph.appendChild(boldLabel);
+                paragraph.appendChild(document.createTextNode(field.value));
+                container.appendChild(paragraph);
+            });
+
+        }
+
+        // helper 
+        function approveOrDenyRequest(requestfooditemID, requestrecipientID, requestdecision) {
+
+            // Get hidden fields by their ASP.NET generated Client IDs
+            document.getElementById('<%= RequestFoodItemID.ClientID %>').value = requestfooditemID;
+            document.getElementById('<%= RequestRecipientID.ClientID %>').value = requestrecipientID;
+            document.getElementById('<%= RequestDecision.ClientID %>').value = requestdecision;
+
+
+            // Submit the form
+            __doPostBack('', 'ApproveOrDenyRequest');
+        }
     </script>
 
     <div class="dashboard_container">
@@ -358,11 +406,35 @@
                               <asp:Repeater ID="rptdonation" runat="server">
                                   <ItemTemplate>
                                       <div class="donation">
-                                          <span class="donationName"><%# Eval("DonorName") %></span>
-                                          <span class="donationFood"><%# Eval("AppointmentTime") %></span>
+                                           <h3><%# Eval("Quantity") %>  <%# Eval("FoodCategory") %></h3>
+                                            <p> To: <span><%# Eval("RecipientName") %> </span></p>
+                                             <button type="button" 
+                                                       class="btn btn-info" 
+                                                       data-toggle="modal" 
+                                                       data-target="#deliveryDetailsModal"
+                                                       onclick="showDelivery('<%# Server.HtmlEncode(Eval("SerializedDelivery").ToString()) %>')">  <!-- To ensure protection in html coding and json read it as string -->
+                                                       View Delivery Details
+                                                   </button>
                                       </div>
                                   </ItemTemplate>
                               </asp:Repeater>
+                                 <div class="modal fade" id="deliveryDetailsModal" tabindex="-1" aria-labelledby="deliveryDetailsLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                               <h5 class="modal-title" id="deliveryDetailsLabel"></h5>
+                                               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                           </div>
+                                             <div class="modal-body">
+                                               <!-- This is where the food details will be populated dynamically -->
+                                               <div id="deliveryDetailsContainer"></div>
+                                            </div>
+                                            <div class="modal-footer">
+                                               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                           </div>
+                                         </div>
+                                      </div>
+                                 </div>
                           </div>
                       </div>
                 </asp:Panel>
