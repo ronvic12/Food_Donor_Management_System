@@ -72,3 +72,9 @@
     box-sizing: border-box; /* Include padding in dimensions */
     border-radius: 8px; /* Optional, for rounded corners */
 }
+
+/* CSS for hover effect with specific ID */
+#lnkLogout:hover {
+    background-color: #005f73; /* Change to desired hover color */
+    color: #ffffff; /* Optional: Change text color on hover */
+}

@@ -43,11 +43,11 @@
         </asp:ScriptManager>
 
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm>
-            <span class="navbar-brand">Hello Admin</span>
-            <div class="container-fluid p-0">
+            <div class="container-fluid p-0" style="background-color: #003366; color: #ffffff">
                <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+                   <span class="navbar-brand" style= "color: #ffffff">Hello Admin</span>
                   <ul class="navbar-nav ms-auto">
-                      <li class="nav-item"> <asp:LinkButton ID="lnkLogout" runat="server" CssClass="dropdown-item" OnClick="lnkLogout_Click">Log Out</asp:LinkButton></li>
+                      <li class="nav-item"> <asp:LinkButton ID="lnkLogout" runat="server" CssClass="dropdown-item" OnClick="lnkLogout_Click" style= "color: #ffffff">Log Out</asp:LinkButton></li>
                   </ul>
                 </div>
 
