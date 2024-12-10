@@ -11,14 +11,12 @@
             <asp:ListItem Text="Select Role" Value="" />
             <asp:ListItem Text="Donor" Value="Donor" />
             <asp:ListItem Text="Recipient" Value="Recipient" />
-            <asp:ListItem Text="Admin" Value="Admin" />
         </asp:DropDownList>
 
           <div id="userCredentials" class="personalCredentials" style="display: none;">
-            <asp:TextBox ID="txtName" runat="server" Placeholder="Organization Name"></asp:TextBox>
+            <asp:TextBox ID="txtName" runat="server" Placeholder=""></asp:TextBox>
             <asp:TextBox ID="txtEmail" runat="server" Placeholder="Email"></asp:TextBox>
             <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" Placeholder="Password"></asp:TextBox>
-
             </div>
           <br />
         <asp:Button ID="btnRegister" runat="server" Text="Register" OnClick="btnRegister_Click" />
@@ -29,14 +27,43 @@
     <script type="text/javascript">
         function toggleCredentials() {
             var role = document.getElementById('<%= ddlRole.ClientID %>').value;
-            document.getElementById('userCredentials').style.display = 'none';
+            var txtName = document.getElementById('<%= txtName.ClientID %>');
+            var userCredentials = document.getElementById('userCredentials');
+            userCredentials.style.display = 'none';
 
-            if(role === 'Donor') {
-                document.getElementById('userCredentials').style.display = 'block';
+            if (role === 'Donor') {
+                // Change the placeholder text to "Name" when 'Donor' is selected
+                txtName.placeholder = "Name";
+                userCredentials.style.display = 'flex';
+                userCredentials.style.flexDirection = 'column';  // Align items vertically
+                userCredentials.style.gap = '15px';  // Space between elements
+
+                // Apply styles to each input inside the userCredentials div
+                var inputs = userCredentials.getElementsByTagName('input');
+                for (var i = 0; i < inputs.length; i++) {
+                    inputs[i].style.width = '100%';  // Make input fields span the full width
+                    inputs[i].style.padding = '10px';
+                    inputs[i].style.margin = '5px 0';
+                    inputs[i].style.border = '1px solid #ccc';
+                    inputs[i].style.borderRadius = '4px';
+                }
             } else if (role === 'Recipient') {
-                document.getElementById('userCredentials').style.display = 'block';
-            } else if (role === 'Admin') {
-                document.getElementById('userCredentials').style.display = 'block';
+                txtName.placeholder = "Organization Name";
+                userCredentials.style.display = 'flex';
+                userCredentials.style.flexDirection = 'column';  // Align items vertically
+                userCredentials.style.gap = '15px';  // Space between elements
+
+                // Apply styles to each input inside the userCredentials div
+                var inputs = userCredentials.getElementsByTagName('input');
+                for (var i = 0; i < inputs.length; i++) {
+                    inputs[i].style.width = '100%';  // Make input fields span the full width
+                    inputs[i].style.padding = '10px';
+                    inputs[i].style.margin = '5px 0';
+                    inputs[i].style.border = '1px solid #ccc';
+                    inputs[i].style.borderRadius = '4px';
+                }
+            } else {
+                userCredentials.style.display = 'none';
             }
         }
     </script>

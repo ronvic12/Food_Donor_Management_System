@@ -12,14 +12,19 @@
     place-items: center; /* Centers both horizontally and vertically */
 }
 
-.registercontainer {
-    display: grid;
-    place-items: center; /* Centers both horizontally and vertically */
+.personalCredentials {
+    display: flex;
+    flex-direction: column; /* Align items vertically */
+    gap: 15px; /* Space between elements */
 }
-.userCredentials {
-    display: grid;
-    place-items: center; /* Centers both horizontally and vertically */
-}
+
+    .personalCredentials input {
+        width: 100%; /* Make input fields span the full width */
+        padding: 10px;
+        margin: 5px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
 .custom-navbar {
     background-color: #CBC3E3; /* Custom background color */
     color: white;
@@ -32,3 +37,27 @@
         .custom-navbar .nav-link:hover {
             color: #ffc107; /* Change link color on hover */
         }
+
+
+    .nav-link:hover {
+        color: #007bff; /* Hover color */
+        background-color: #ffffff; /* Optional: change background on hover */
+        border-radius: 4px; /* Optional: round the corners */
+    }
+
+/* Register Button */
+#btnRegister {
+    background-color: #004085; /* Navy-blue background */
+    color: white; /* White text */
+    border: 2px solid #003366; /* Darker blue border for contrast */
+    border-radius: 5px; /* Rounded corners for a modern look */
+    padding: 10px 20px; /* Comfortable click area */
+    font-size: 16px; /* Slightly larger text for readability */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s, border-color 0.3s; /* Smooth transition on hover */
+}
+
+    #btnRegister:hover {
+        background-color: #003366; /* Darker blue on hover */
+        border-color: #002244; /* Even darker blue border on hover */
+    }

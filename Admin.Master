@@ -50,10 +50,7 @@
                       <li class="nav-item"> <asp:LinkButton ID="lnkLogout" runat="server" CssClass="dropdown-item" OnClick="lnkLogout_Click" style= "color: #ffffff">Log Out</asp:LinkButton></li>
                   </ul>
                 </div>
-
             </div>
-
-
         </nav>
          <div class="container body-content">
        <asp:ContentPlaceHolder ID="AdminContent" runat="server">
