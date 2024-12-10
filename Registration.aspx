@@ -15,7 +15,7 @@
         </asp:DropDownList>
 
           <div id="userCredentials" class="personalCredentials" style="display: none;">
-            <asp:TextBox ID="txtName" runat="server" Placeholder="Name"></asp:TextBox>
+            <asp:TextBox ID="txtName" runat="server" Placeholder="Organization Name"></asp:TextBox>
             <asp:TextBox ID="txtEmail" runat="server" Placeholder="Email"></asp:TextBox>
             <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" Placeholder="Password"></asp:TextBox>
 

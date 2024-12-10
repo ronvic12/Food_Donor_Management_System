@@ -14,6 +14,7 @@
         <!-- Include Bootstrap JS -->
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
+        // consider creating a new js script for cleanliness of the code.
         // Helper function to format the date
         function formatDate(dateString) {
             const date = new Date(dateString);
@@ -111,9 +112,10 @@
             // Append the table to the container
             container.appendChild(table);
         }
+
+
         function showInventory(inventoryJSON) {
             const inventory = JSON.parse(inventoryJSON);
-            console.log(inventory);
             // Get the container for food details
             const container = document.getElementById("inventoryDetailsContainer");
             // Clear previous content
@@ -129,7 +131,7 @@
                 { label: "Food Name", value: inventory[0].InventoryFoodName },
                 { label: "Description", value: inventory[0].InventoryDescription },
                 { label: "Quantity", value: inventory[0].InventoryQuantity },
-                { label: "Expiration Date", value: new Date(inventory[0].InventoryExpirationDate).toLocaleDateString() }
+                { label: "Expiration Date", value: formatDate(inventory[0].InventoryExpirationDate)}
             ];
 
             fields.forEach(field => {
@@ -142,6 +144,63 @@
             });
 
         }
+            // difference is that it should have approve and reject button. 
+
+        function showRecipients(recipientJSON) {
+            const recipients = JSON.parse(recipientJSON);
+            const container = document.getElementById("recipientDetailsContainer");
+            // Clear previous content
+            while (container.firstChild) {
+                container.removeChild(container.firstChild);
+            }
+
+            // Create and append details dynamically, inventory uses first child only, since that only matters
+            const fields = [
+                { label: "Recipient Name", value: recipients[0].RecipientName },
+                { label: "Food Category", value: recipients[0].FoodCategory },
+                { label: "Food Item", value: recipients[0].FoodItem },
+                { label: "Description", value: recipients[0].Description },
+                { label: "Quantity", value: recipients[0].Quantity },
+                { label: "Expiration Date", value: formatDate(recipients[0].ExpirationDate) },
+                { label: "Status", value: recipients[0].FoodItemStatus == "Requested" ? "Pending Request":""}
+            ];
+
+            fields.forEach(field => {
+                const paragraph = document.createElement("p");
+                const boldLabel = document.createElement("strong");
+                boldLabel.textContent = `${field.label}: `;
+                paragraph.appendChild(boldLabel);
+                paragraph.appendChild(document.createTextNode(field.value));
+                container.appendChild(paragraph);
+            });
+
+            // Create and append "Approve" and "Reject" buttons
+            const buttonContainer = document.createElement("div");
+            buttonContainer.style.marginTop = "10px"; // Optional: Adds space between details and buttons
+
+            const approveButton = document.createElement("button");
+            approveButton.textContent = "Approve Request";
+            approveButton.classList.add("approve-btn"); // Optional: Add a CSS class for styling
+            approveButton.onclick = function () {
+                alert("Approved!"); // You can replace this with your desired functionality
+            };
+
+            const rejectButton = document.createElement("button");
+            rejectButton.textContent = "Deny Request";
+            rejectButton.classList.add("reject-btn"); // Optional: Add a CSS class for styling
+            rejectButton.onclick = function () {
+                alert("Rejected!"); // You can replace this with your desired functionality
+            };
+
+            // Append buttons to the button container
+            buttonContainer.appendChild(approveButton);
+            buttonContainer.appendChild(rejectButton);
+
+            // Append the button container to the main container
+            container.appendChild(buttonContainer);
+                
+
+         }
     </script>
 
     <div class="dashboard_container">
@@ -203,11 +262,36 @@
                                   <asp:Repeater ID="rptPendingRequests" runat="server">
                                       <ItemTemplate>
                                           <div class="requests">
-                                              <span class="recipientName"><%# Eval("DonorName") %></span>
-                                              <span class="recipientFood"><%# Eval("AppointmentTime") %></span>
+                                              <h3><%# Eval("RecipientName") %>  <%# Eval("Quantity") %> <%# Eval("FoodCategory") %></h3>
+
+                                               <button type="button" 
+                                                         class="btn btn-info" 
+                                                         data-toggle="modal" 
+                                                         data-target="#recipientDetailModal"
+                                                         onclick="showRecipients('<%# Server.HtmlEncode(Eval("SerializedRecipients").ToString()) %>')">  <!-- To ensure protection in html coding and json read it as string -->
+                                                         View Recipients
+                                                     </button>
                                           </div>
                                       </ItemTemplate>
                                   </asp:Repeater>
+
+                                    <div class="modal fade" id="recipientDetailModal" tabindex="-1" aria-labelledby="recipientDetailLabel" aria-hidden="true">
+                                       <div class="modal-dialog">
+                                           <div class="modal-content">
+                                               <div class="modal-header">
+                                                  <h5 class="modal-title" id="recipientDetailLabel">Recipient Details</h5>
+                                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                              </div>
+                                                <div class="modal-body">
+                                                  <!-- This is where the food details will be populated dynamically -->
+                                                  <div id="recipientDetailsContainer"></div>
+                                               </div>
+                                               <div class="modal-footer">
+                                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                              </div>
+                                            </div>
+                                         </div>
+                                    </div>
                               </div>
                           </div>
                 </asp:Panel>

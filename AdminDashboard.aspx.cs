@@ -19,6 +19,11 @@ namespace Food_Donor_Management_System
 {
     public partial class AdminDashboard : System.Web.UI.Page
     {
+        public enum FoodStatus
+        {
+            Available,
+            Requested
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -26,6 +31,7 @@ namespace Food_Donor_Management_System
                 // Load appointments on the first load
                 LoadDropOffAppointments();
                 LoadAvailableFoodItems();
+                LoadRecipientRequests();
             }
             else
             {
@@ -149,17 +155,7 @@ namespace Food_Donor_Management_System
                 return DateTime.Now.ToString("MMMM d");
             }
         }
-
-        
-
-        protected void rptTodayAppointments_ItemCommand(object source, RepeaterCommandEventArgs e)
-        {
-
-        }
-        public enum FoodStatus
-        {
-            Available
-        }
+    
 
         // This is for Inventory
         private void LoadAvailableFoodItems()
@@ -227,6 +223,81 @@ namespace Food_Donor_Management_System
 
             rptInventory.DataSource = groupavailabledata;
             rptInventory.DataBind();
+        }
+
+        private void LoadRecipientRequests()
+        {
+
+            string query = @"
+                        SELECT 
+                            u.Name AS RecipientName,
+                            fi.Name AS FoodItem,
+                            fc.Name AS FoodCategory,
+                            fi.Description,
+                            fi.Quantity,
+                            fi.ExpiryDate as ExpirationDate,
+                            fi.Status AS FoodItemStatus,
+                            r.Status AS RequestStatus
+                        FROM 
+                            Requests r
+                        INNER JOIN 
+                            FoodItems fi ON r.FoodItemID = fi.ID
+                        INNER JOIN 
+                            FoodCategories fc ON fi.CategoryID = fc.ID
+                        INNER JOIN 
+                            Users u ON r.RecipientID = u.ID
+                        WHERE
+                             fi.Status = @status";
+            
+            var parameters = new Dictionary<string, object>
+            {
+                { "@status", FoodStatus.Requested.ToString() }
+            };
+               // Implementing LINQ Structure because the data needs to be shown in front end is group hierarchally. 
+            var recipientsresult = DatabaseHelper.ExecuteQuery(query, parameters);
+
+
+            var grouprecipientdata = recipientsresult.AsEnumerable()
+                              .GroupBy(row => new
+                              { // need food name since because so that inventory has differentiation of names under same category
+                                  RecipientName= row["RecipientName"],
+                                  FoodCategory = row["FoodCategory"],
+                                  FoodItem = row["FoodItem"],
+                                  Quantity = row["Quantity"],
+                                  ExpirationDate = row["ExpirationDate"]
+                              }).Select(group => new
+                              {
+                                  RecipientName = group.Key.RecipientName,
+                                  FoodCategory = group.Key.FoodCategory,
+                                  FoodItem = group.Key.FoodItem,
+                                  Quantity = group.Key.Quantity,
+                                  ExpirationDate = group.Key.ExpirationDate,
+                                  RecipientItems = group.Select(item => new
+                                  {
+                                      RecipientName = item["RecipientName"],
+                                      FoodCategory = item["FoodCategory"],
+                                      FoodItem = item["FoodItem"],
+                                      Description = item["Description"],
+                                      Quantity = item["Quantity"],
+                                      ExpirationDate = item["ExpirationDate"],
+                                      FoodItemStatus = item["FoodItemStatus"]
+                                  }).ToList(),  // to ensure it serializes into JSON
+
+                                  // Serialize Inventory as JSON and pass it to the UI
+                                  SerializedRecipients = JsonConvert.SerializeObject(group.Select(item => new
+                                  {
+                                      RecipientName = item["RecipientName"],
+                                      FoodCategory = item["FoodCategory"],
+                                      FoodItem = item["FoodItem"],
+                                      Description = item["Description"],
+                                      Quantity = item["Quantity"],
+                                      ExpirationDate = item["ExpirationDate"],
+                                      FoodItemStatus = item["FoodItemStatus"]
+                                  }).ToList())
+                              })
+                              .ToList();
+            rptPendingRequests.DataSource = grouprecipientdata;
+            rptPendingRequests.DataBind();
         }
     }
 }

@@ -34,3 +34,16 @@
         margin-right: 10px;
         white-space: nowrap;
     }
+
+
+.requests {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ddd;
+}
+
+    .requests span {
+        margin-right: 10px;
+        white-space: nowrap;
+    }
