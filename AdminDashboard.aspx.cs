@@ -22,6 +22,7 @@ namespace Food_Donor_Management_System
     {
         public enum FoodStatus
         {
+            Pending,
             Available,
             Requested,
             Reserved,
@@ -157,12 +158,17 @@ namespace Food_Donor_Management_System
         INNER JOIN 
             FoodCategories fc ON fi.CategoryID = fc.ID
         WHERE
-            fi.DropOffDateTime >= CURDATE()  
+            fi.DropOffDateTime >= CURDATE() AND fi.Status = @Status
         ORDER BY
-            fi.DropOffDateTime ";
+            fi.DropOffDateTime "; // make sure to add status to pending
 
+
+            var parameters = new Dictionary<string, object>
+            {
+                { "@status", FoodStatus.Pending.ToString() }
+            };
             // Implementing LINQ Structure because the data needs to be shown in front end is group hierarchally. 
-            var result = DatabaseHelper.ExecuteQuery(query);
+            var result = DatabaseHelper.ExecuteQuery(query, parameters);
             // Group data by DonorName and AppointmentTime
             var groupedData = result.AsEnumerable()
                               .GroupBy(row => new

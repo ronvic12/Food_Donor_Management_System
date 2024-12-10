@@ -98,23 +98,48 @@
                 
                 // Approve/Reject Buttons
                   const actionTd = document.createElement("td");
+                  actionTd.style.border = "1px solid #ddd";
+                  actionTd.style.padding = "8px";
+
                   const approveButton = document.createElement("button");
                   approveButton.textContent = "Approve";
                   approveButton.style.marginRight = "5px";
+                  approveButton.style.backgroundColor = "#90EE90";
+                  approveButton.style.border = "none";
+                  approveButton.style.padding = "5px 10px";
+                  approveButton.style.cursor = "pointer";
                   approveButton.onclick = () => submitDecision(item.FoodItemID, "Approve");
+
+                    // Hover effect for approve button
+                    approveButton.onmouseover = () => {
+                        approveButton.style.backgroundColor = "#76C776"; // Lighter green when hovered
+                    };
+                    approveButton.onmouseout = () => {
+                        approveButton.style.backgroundColor = "#90EE90"; // Return to original green
+                };
+
 
                   const rejectButton = document.createElement("button");
                   rejectButton.textContent = "Reject";
+                  rejectButton.style.backgroundColor = "#FF7F7F";
+                  rejectButton.style.border = "none";
+                  rejectButton.style.padding = "5px 10px";
+                  rejectButton.style.cursor = "pointer";
                   rejectButton.onclick = () => submitDecision(item.FoodItemID, "Reject");
 
+                    // Hover effect for reject button
+                    rejectButton.onmouseover = () => {
+                        rejectButton.style.backgroundColor = "#FF4C4C"; // Darker red when hovered
+                    };
+                    rejectButton.onmouseout = () => {
+                        rejectButton.style.backgroundColor = "#FF7F7F"; // Return to original red
+                    };
                   actionTd.appendChild(approveButton);
                   actionTd.appendChild(rejectButton);
 
                 row.appendChild(actionTd);
                 table.appendChild(row);
             });
-                   
-          
             // Append the table to the container
             container.appendChild(table);
         }
@@ -259,11 +284,11 @@
 
             <div id="appointmentsContainer">
                 <div class="appointmentGroup">
-                    <h3 class="appointmentDate">Today, December 6</h3>
                     <asp:Repeater ID="rptTodayAppointments" runat="server">
                         <ItemTemplate>
+                             <h3 class="appointmentDate"><%# Eval("AppointmentTime", "{0:MMMM dd, yyyy}") %></h3>
                             <div class="appointment">
-                            <h3><%# Eval("DonorName") %> - <%# Eval("AppointmentTime", "{0:yyyy-MM-dd HH:mm}") %></h3>
+                            <h3><%# Eval("DonorName") %> - <%# Eval("AppointmentTime", "{0:HH:mm}") %></h3>
                                    <button type="button" 
                                        class="btn btn-info" 
                                        data-toggle="modal" 
@@ -279,17 +304,15 @@
                             <!-- Modal Structure -->
                     <div class="modal fade" id="foodDetailsModal" tabindex="-1" aria-labelledby="foodDetailsLabel" aria-hidden="true">
                          <div class="modal-dialog">
-                             <div class="modal-content">
+                             <div class="modal-content" id="foodDetailContent">
                                  <div class="modal-header">
                                     <h5 class="modal-title" id="foodDetailsLabel">Food Details</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                   <div class="modal-body">
                                     <!-- This is where the food details will be populated dynamically -->
                                     <div id="foodDetailsContainer"></div>
                                  </div>
-                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                 <div class="modal-footer">                                   
                                 </div>
                               </div>
                            </div>
@@ -327,15 +350,13 @@
                                        <div class="modal-dialog">
                                            <div class="modal-content">
                                                <div class="modal-header">
-                                                  <h5 class="modal-title" id="recipientDetailLabel">Recipient Details</h5>
-                                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                  <h5 class="modal-title" id="recipientDetailLabel">Recipient Details</h5>               
                                               </div>
                                                 <div class="modal-body">
                                                   <!-- This is where the food details will be populated dynamically -->
                                                   <div id="recipientDetailsContainer"></div>
                                                </div>
                                                <div class="modal-footer">
-                                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                               </div>
                                             </div>
                                          </div>
@@ -374,15 +395,13 @@
                                   <div class="modal-dialog">
                                       <div class="modal-content">
                                           <div class="modal-header">
-                                             <h5 class="modal-title" id="inventoryDetailsLabel"></h5>
-                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                             <h5 class="modal-title" id="inventoryDetailsLabel"></h5>                    
                                          </div>
                                            <div class="modal-body">
                                              <!-- This is where the food details will be populated dynamically -->
                                              <div id="inventoryDetailsContainer"></div>
                                           </div>
                                           <div class="modal-footer">
-                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                          </div>
                                        </div>
                                     </div>
@@ -422,15 +441,13 @@
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                               <h5 class="modal-title" id="deliveryDetailsLabel"></h5>
-                                               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                               <h5 class="modal-title" id="deliveryDetailsLabel"></h5>                                               
                                            </div>
                                              <div class="modal-body">
                                                <!-- This is where the food details will be populated dynamically -->
                                                <div id="deliveryDetailsContainer"></div>
                                             </div>
-                                            <div class="modal-footer">
-                                               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <div class="modal-footer">                                               
                                            </div>
                                          </div>
                                       </div>
