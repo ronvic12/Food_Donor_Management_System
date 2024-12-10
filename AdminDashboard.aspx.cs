@@ -204,20 +204,25 @@ namespace Food_Donor_Management_System
                               })
                               .ToList();// Ensure grouping is executed before serializing to JSON
 
-            // Now, if you want to bind the data to the DataSource, you can continue to use DataBind
-            rptTodayAppointments.DataSource = groupedData;
-            rptTodayAppointments.DataBind();
-
-        }
-        public string TodayDate
-        {
-            get
+            // Check if data is empty
+            if (groupedData.Count == 0)
             {
-                return DateTime.Now.ToString("MMMM d");
+                // Show a label with a more detailed message if no appointments
+                lblNoAppointments.Text = "There are no scheduled appointments today or in the future dates.";
+                lblNoAppointments.Visible = true;  // Make the label visible
+                rptTodayAppointments.Visible = false;  // Hide the Repeater
             }
+            else
+            {
+                // Bind the data to the Repeater if available
+                rptTodayAppointments.DataSource = groupedData;
+                rptTodayAppointments.DataBind();
+                lblNoAppointments.Visible = false;  // Hide the "No appointments" message
+                rptTodayAppointments.Visible = true;  // Ensure the Repeater is visible
+            }
+
         }
     
-
         // This is for Inventory
         private void LoadAvailableFoodItems()
         {
@@ -282,8 +287,24 @@ namespace Food_Donor_Management_System
                               })
                               .ToList();
 
-            rptInventory.DataSource = groupavailabledata;
-            rptInventory.DataBind();
+            // Check if data is empty
+            if (groupavailabledata.Count == 0)
+            {
+
+                lblNoInventory.Text = "Food Item Inventory is empty.";
+                lblNoInventory.Visible = true;  // Make the label visible
+                rptInventory.Visible = false;  // Hide the Repeater
+            }
+            else
+            {
+                // Bind the data to the Repeater if available
+                rptInventory.DataSource = groupavailabledata;
+                rptInventory.DataBind();
+                lblNoInventory.Visible = false;
+                rptInventory.Visible = true;
+            }
+
+         
         }
 
         private void LoadRecipientRequests()
@@ -363,8 +384,26 @@ namespace Food_Donor_Management_System
                                   }).ToList())
                               })
                               .ToList();
-            rptPendingRequests.DataSource = grouprecipientdata;
-            rptPendingRequests.DataBind();
+
+
+            // Check if data is empty
+            if (grouprecipientdata.Count == 0)
+            {
+                // Show a label with a more detailed message if no appointments
+                lblNoRecipients.Text = "There are no pending request at this time.";
+                lblNoRecipients.Visible = true;  // Make the label visible
+                rptPendingRequests.Visible = false;  // Hide the Repeater
+            }
+            else
+            {
+                // Bind the data to the Repeater if available
+                rptPendingRequests.DataSource = grouprecipientdata;
+                rptPendingRequests.DataBind();
+                lblNoRecipients.Visible = false;  // Hide the "No appointments" message
+                rptPendingRequests.Visible = true;  // Ensure the Repeater is visible
+            }
+
+         
         }
 
 
@@ -447,11 +486,23 @@ namespace Food_Donor_Management_System
                                   }).ToList())
                               })
                               .ToList();
-            rptdonation.DataSource = groupdeliverydata;
-            rptdonation.DataBind();
 
-
-
+            // Check if data is empty
+            if (groupdeliverydata.Count == 0)
+            {
+               
+                lblNoDelivery.Text = "There are no food items to deliver at this time.";
+                lblNoDelivery.Visible = true;  // Make the label visible
+                rptdonation.Visible = false;  // Hide the Repeater
+            }
+            else
+            {
+                // Bind the data to the Repeater if available
+                rptdonation.DataSource = groupdeliverydata;
+                rptdonation.DataBind();
+                lblNoDelivery.Visible = false;  
+                rptdonation.Visible = true;  
+            }
 
         }
     }

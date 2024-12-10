@@ -284,6 +284,7 @@
 
             <div id="appointmentsContainer">
                 <div class="appointmentGroup">
+                    <asp:Label ID="lblNoAppointments" runat="server" Text="" Visible="false" />
                     <asp:Repeater ID="rptTodayAppointments" runat="server">
                         <ItemTemplate>
                              <h3 class="appointmentDate"><%# Eval("AppointmentTime", "{0:MMMM dd, yyyy}") %></h3>
@@ -330,6 +331,7 @@
                           <div id="recipientContainer">
                               <div class="recipientGroup">
                                   <h3 class="recipientRequests">Pending Requests</h3>
+                                  <asp:Label ID="lblNoRecipients" runat="server" Text="" Visible="false" />
                                   <asp:Repeater ID="rptPendingRequests" runat="server">
                                       <ItemTemplate>
                                           <div class="requests">
@@ -374,6 +376,7 @@
                       <div id="inventoryContainer">
                           <div class="inventoryGroup">
                               <h3 class="available">Available</h3>
+                               <asp:Label ID="lblNoInventory" runat="server" Text="" Visible="false" />
                               <asp:Repeater ID="rptInventory" runat="server">
                                   <ItemTemplate>
                                 <div class="inventory">
@@ -422,6 +425,7 @@
                       <div id="donationContainer">
                           <div class="donationGroup">
                               <h3 class="deliver">Ready to Deliver</h3>
+                              <asp:Label ID="lblNoDelivery" runat="server" Text="" Visible="false" />
                               <asp:Repeater ID="rptdonation" runat="server">
                                   <ItemTemplate>
                                       <div class="donation">

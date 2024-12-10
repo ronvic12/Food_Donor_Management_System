@@ -69,6 +69,15 @@ namespace Food_Donor_Management_System
         protected global::System.Web.UI.WebControls.Panel pnlDonorDashboard;
 
         /// <summary>
+        /// lblNoAppointments control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblNoAppointments;
+
+        /// <summary>
         /// rptTodayAppointments control.
         /// </summary>
         /// <remarks>
@@ -85,6 +94,15 @@ namespace Food_Donor_Management_System
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlRecipientDashboard;
+
+        /// <summary>
+        /// lblNoRecipients control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblNoRecipients;
 
         /// <summary>
         /// rptPendingRequests control.
@@ -105,6 +123,15 @@ namespace Food_Donor_Management_System
         protected global::System.Web.UI.WebControls.Panel pnlInventoryDashboard;
 
         /// <summary>
+        /// lblNoInventory control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblNoInventory;
+
+        /// <summary>
         /// rptInventory control.
         /// </summary>
         /// <remarks>
@@ -121,6 +148,15 @@ namespace Food_Donor_Management_System
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel donationDashboard;
+
+        /// <summary>
+        /// lblNoDelivery control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblNoDelivery;
 
         /// <summary>
         /// rptdonation control.
