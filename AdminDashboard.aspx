@@ -212,15 +212,38 @@
 
             const approveButton = document.createElement("button");
             approveButton.textContent = "Approve Request";
+            approveButton.style.marginRight = "5px";
+            approveButton.style.backgroundColor = "#90EE90";
+            approveButton.style.border = "none";
+            approveButton.style.padding = "5px 10px";
+            approveButton.style.cursor = "pointer";
             approveButton.classList.add("approve-btn"); // Optional: Add a CSS class for styling
             approveButton.onclick = () => approveOrDenyRequest(recipients[0].FoodItemID, recipients[0].RecipientID, "Approve");
-                
+            // Hover effect for approve button
+            approveButton.onmouseover = () => {
+                approveButton.style.backgroundColor = "#76C776"; // Lighter green when hovered
+            };
+            approveButton.onmouseout = () => {
+                approveButton.style.backgroundColor = "#90EE90"; // Return to original green
+            };
+
 
             const rejectButton = document.createElement("button");
             rejectButton.textContent = "Deny Request";
+            rejectButton.style.backgroundColor = "#FF7F7F";
+            rejectButton.style.border = "none";
+            rejectButton.style.padding = "5px 10px";
+            rejectButton.style.cursor = "pointer";
             rejectButton.classList.add("reject-btn"); // Optional: Add a CSS class for styling
             rejectButton.onclick = () => approveOrDenyRequest(recipients[0].FoodItemID, recipients[0].RecipientID, "Deny");
 
+            // Hover effect for reject button
+            rejectButton.onmouseover = () => {
+                rejectButton.style.backgroundColor = "#FF4C4C"; // Darker red when hovered
+            };
+            rejectButton.onmouseout = () => {
+                rejectButton.style.backgroundColor = "#FF7F7F"; // Return to original red
+            };
             // Append buttons to the button container
             buttonContainer.appendChild(approveButton);
             buttonContainer.appendChild(rejectButton);
@@ -280,16 +303,16 @@
             <div class ="dashboard_table">
       
             <asp:Panel ID="pnlDonorDashboard" runat="server" Width="100%">
-            <h2 style="text-align: center;">Donor Dashboard: Drop Off Appointments</h2>
-
+            <h3 style="text-align: center;">Donor Dashboard: Drop Off Appointments</h3>
+                <hr>
             <div id="appointmentsContainer">
                 <div class="appointmentGroup">
                     <asp:Label ID="lblNoAppointments" runat="server" Text="" Visible="false" />
                     <asp:Repeater ID="rptTodayAppointments" runat="server">
                         <ItemTemplate>
-                             <h3 class="appointmentDate"><%# Eval("AppointmentTime", "{0:MMMM dd, yyyy}") %></h3>
+                             <h4 class="appointmentDate"><%# Eval("AppointmentTime", "{0:MMMM dd, yyyy}") %></h4>
                             <div class="appointment">
-                            <h3><%# Eval("DonorName") %> - <%# Eval("AppointmentTime", "{0:HH:mm}") %></h3>
+                            <h5><%# Eval("DonorName") %> - <%# Eval("AppointmentTime", "{0:hh:mm tt}") %></h5>
                                    <button type="button" 
                                        class="btn btn-info" 
                                        data-toggle="modal" 
@@ -326,23 +349,24 @@
        
             <div class ="dashboard_table">
                     <asp:Panel ID="pnlRecipientDashboard" runat="server" Width="100%">
-                    <h2 style="text-align: center;">Recipient  Dashboard: Food Requests</h2>
-
+                    <h3 style="text-align: center;">Recipient  Dashboard: Food Requests</h3>
+                         <hr>
                           <div id="recipientContainer">
                               <div class="recipientGroup">
-                                  <h3 class="recipientRequests">Pending Requests</h3>
+                                  <h4 class="recipientRequests">Pending Requests</h4>
                                   <asp:Label ID="lblNoRecipients" runat="server" Text="" Visible="false" />
                                   <asp:Repeater ID="rptPendingRequests" runat="server">
                                       <ItemTemplate>
                                           <div class="requests">
-                                              <h3><%# Eval("RecipientName") %>  <%# Eval("Quantity") %> <%# Eval("FoodCategory") %></h3>
+                                              <h5><%# Eval("RecipientName") %>  </h5>
 
+                                              <p><strong>Requested Food:</strong> <span><%# Eval("Quantity") %> <%# Eval("FoodCategory") %></span></p>
                                                <button type="button" 
                                                          class="btn btn-info" 
                                                          data-toggle="modal" 
                                                          data-target="#recipientDetailModal"
                                                          onclick="showRecipients('<%# Server.HtmlEncode(Eval("SerializedRecipients").ToString()) %>')">  <!-- To ensure protection in html coding and json read it as string -->
-                                                         View Recipients
+                                                         View Recipient
                                                      </button>
                                           </div>
                                       </ItemTemplate>
@@ -372,15 +396,16 @@
            
             <div class ="dashboard_table">
                             <asp:Panel ID="pnlInventoryDashboard" runat="server" Width="100%">
-                        <h2 style="text-align: center;">Inventory Dashboard</h2>
+                        <h3 style="text-align: center;">Inventory Dashboard</h3>
+                                 <hr>
                       <div id="inventoryContainer">
                           <div class="inventoryGroup">
-                              <h3 class="available">Available</h3>
+                              <h4 class="available">Available</h4>
                                <asp:Label ID="lblNoInventory" runat="server" Text="" Visible="false" />
                               <asp:Repeater ID="rptInventory" runat="server">
                                   <ItemTemplate>
                                 <div class="inventory">
-                                     <h3><%# Eval("InventoryQuantity") %>  <%# Eval("InventoryFoodCategory") %></h3>
+                                     <h5><%# Eval("InventoryQuantity") %>  <%# Eval("InventoryFoodCategory") %></h5>
 
                                        <button type="button" 
                                            class="btn btn-info" 
@@ -398,7 +423,7 @@
                                   <div class="modal-dialog">
                                       <div class="modal-content">
                                           <div class="modal-header">
-                                             <h5 class="modal-title" id="inventoryDetailsLabel"></h5>                    
+                                             <h5 class="modal-title" id="inventoryDetailsLabel">Inventory Detail</h5>                    
                                          </div>
                                            <div class="modal-body">
                                              <!-- This is where the food details will be populated dynamically -->
@@ -420,32 +445,33 @@
             
             <div class ="dashboard_table">
                  <asp:Panel ID="donationDashboard" runat="server" Width="100%">
-                        <h2 style="text-align: center;">Donation Status</h2>
-
+                        <h3 style="text-align: center;">Donation Status</h3>
+                      <hr>
                       <div id="donationContainer">
                           <div class="donationGroup">
-                              <h3 class="deliver">Ready to Deliver</h3>
+                              <h4 class="deliver">Ready to Deliver</h4>
                               <asp:Label ID="lblNoDelivery" runat="server" Text="" Visible="false" />
                               <asp:Repeater ID="rptdonation" runat="server">
                                   <ItemTemplate>
                                       <div class="donation">
-                                           <h3><%# Eval("Quantity") %>  <%# Eval("FoodCategory") %></h3>
-                                            <p> To: <span><%# Eval("RecipientName") %> </span></p>
-                                             <button type="button" 
-                                                       class="btn btn-info" 
-                                                       data-toggle="modal" 
-                                                       data-target="#deliveryDetailsModal"
-                                                       onclick="showDelivery('<%# Server.HtmlEncode(Eval("SerializedDelivery").ToString()) %>')">  <!-- To ensure protection in html coding and json read it as string -->
-                                                       View Delivery Details
-                                                   </button>
+                                           <h5><%# Eval("Quantity") %>  <%# Eval("FoodCategory") %> </h5>
+                                          <p><strong>To:</strong> <span><%# Eval("RecipientName") %></span></p>
+                                            <button type="button" 
+                                            class="btn btn-info" 
+                                            data-toggle="modal" 
+                                            data-target="#deliveryDetailsModal"
+                                            onclick="showDelivery('<%# Server.HtmlEncode(Eval("SerializedDelivery").ToString()) %>')">  <!-- To ensure protection in html coding and json read it as string -->
+                                            View Delivery Details
+                                        </button>
                                       </div>
+                                       
                                   </ItemTemplate>
                               </asp:Repeater>
                                  <div class="modal fade" id="deliveryDetailsModal" tabindex="-1" aria-labelledby="deliveryDetailsLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                               <h5 class="modal-title" id="deliveryDetailsLabel"></h5>                                               
+                                               <h5 class="modal-title" id="deliveryDetailsLabel">Delivery Details</h5>                                               
                                            </div>
                                              <div class="modal-body">
                                                <!-- This is where the food details will be populated dynamically -->
@@ -462,4 +488,33 @@
             </div>
          
       </div>
+
+    <style>
+
+   .donation{
+        display:flex;
+        flex-direction:column;
+    }
+        .requests {
+            display: flex;
+            flex-direction: column;
+        }
+         h4 {
+            display: inline-block;   /* Makes the width adjust to the content */
+            padding: 10px;
+            border: 2px solid #007BFF; /* Border will adjust based on content length */
+            border-radius: 10px;
+            background-color: lightblue;
+            font-size:20px;
+        }
+
+      hr {
+            border: none;               /* Remove default border */
+            border-top: 2px solid #007BFF; /* Add custom border on top */
+            width: 100%;                 /* Adjust width of the line */
+            margin-left: auto;          /* Center the line horizontally */
+            margin-right: auto;         /* Center the line horizontally */
+        }
+
+    </style>
 </asp:Content>

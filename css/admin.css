@@ -7,7 +7,6 @@
 
 .dashboard_table {
     width: calc(50% - 10px); /* Make two tables fit in a row (adjust for gap if present) */
-    height: 200px; /* Optional: Set a fixed height for the tables */
     border: 1px solid #ccc; /* Styling for the tables */
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Add some shadow for visual appeal */
     overflow-y: auto; /* Enable scrolling for large content */
@@ -78,3 +77,10 @@
     background-color: #005f73; /* Change to desired hover color */
     color: #ffffff; /* Optional: Change text color on hover */
 }
+
+
+.fooddonationContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
