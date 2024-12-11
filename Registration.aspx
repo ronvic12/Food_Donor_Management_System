@@ -19,6 +19,7 @@
             <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" Placeholder="Password"></asp:TextBox>
             </div>
           <br />
+          <asp:HyperLink ID="CreateAccountHyperLink" runat="server" ForeColor="Blue" NavigateUrl="~/Login.aspx">Already a user? Sign In</asp:HyperLink>
         <asp:Button ID="btnRegister" runat="server" Text="Register" OnClick="btnRegister_Click" />
         <asp:Label ID="lblMessage" runat="server" ForeColor="Green"></asp:Label>
 
@@ -38,6 +39,10 @@
                 userCredentials.style.flexDirection = 'column';  // Align items vertically
                 userCredentials.style.gap = '15px';  // Space between elements
 
+                // Add the required attribute to the input field
+                txtName.required = true;
+                txtEmail.required = true;
+                txtPassword.required = true;
                 // Apply styles to each input inside the userCredentials div
                 var inputs = userCredentials.getElementsByTagName('input');
                 for (var i = 0; i < inputs.length; i++) {
@@ -53,6 +58,10 @@
                 userCredentials.style.flexDirection = 'column';  // Align items vertically
                 userCredentials.style.gap = '15px';  // Space between elements
 
+                // Add the required attribute to the input field
+                txtName.required = true;
+                txtEmail.required = true;
+                txtPassword.required = true;
                 // Apply styles to each input inside the userCredentials div
                 var inputs = userCredentials.getElementsByTagName('input');
                 for (var i = 0; i < inputs.length; i++) {
@@ -64,6 +73,10 @@
                 }
             } else {
                 userCredentials.style.display = 'none';
+                // Add the required attribute to the input field
+                txtName.required = false;
+                txtEmail.required = false;
+                txtPassword.required = false;
             }
         }
     </script>

@@ -61,3 +61,21 @@
         background-color: #003366; /* Darker blue on hover */
         border-color: #002244; /* Even darker blue border on hover */
     }
+
+    /* Login Button*/
+
+#btnLogin {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#btnLogin:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Xml.Linq;
 
 namespace Food_Donor_Management_System
 {
@@ -21,10 +22,95 @@ namespace Food_Donor_Management_System
                 PopulateFoodCategories();
             }
         }
-
-
+        private DataTable GetFoodTable()
+        {
+            if (Session["FoodTable"] == null)
+            {
+                DataTable dt = new DataTable();
+                dt.Columns.Add("Quantity", typeof(int));
+                dt.Columns.Add("FoodCategory", typeof(string));
+                dt.Columns.Add("FoodName", typeof(string));
+                dt.Columns.Add("Description", typeof(string));
+                dt.Columns.Add("ExpirationDate", typeof(DateTime));
+                Session["FoodTable"] = dt;
+            }
+            return (DataTable)Session["FoodTable"];
+        }
 
         protected void btnAddFood_Click(object sender, EventArgs e)
+        {
+            DataTable dt = GetFoodTable();
+
+            DataRow dr = dt.NewRow();
+            dr["Quantity"] = int.Parse(txtQuantity.Text);
+            dr["FoodCategory"] = ddlCategories.SelectedValue;
+            dr["FoodName"] = txtFoodName.Text;
+            dr["Description"] = txtDescription.Text;
+            dr["ExpirationDate"] = DateTime.Parse(txtExpiryDate.Text);
+
+            dt.Rows.Add(dr);
+
+            gvFoodItems.DataSource = dt; // for the main grid. 
+            gvFoodItems.DataBind();
+
+
+            gvModalFoodItem.DataSource = dt; // for modal grid
+            gvModalFoodItem.DataBind();
+
+            // Clear input fields
+            txtQuantity.Text = "";
+            ddlCategories.ClearSelection();
+            txtFoodName.Text = "";
+            txtDescription.Text = "";
+            txtExpiryDate.Text = "";
+        }
+
+
+        protected void SaveAppointment_Click(object sender, EventArgs e) 
+        {
+            DataTable dt = GetFoodTable();
+            string dropoff_DateTime = txtdropoffDateTime.Text;
+
+            foreach (DataRow row in dt.Rows) 
+            {
+                string query = "INSERT INTO FoodItems (Name, Description, ExpiryDate, DonorID, Quantity, DropOffDateTime, CategoryID) " +
+                      "VALUES (@Name, @Description, @ExpiryDate, @DonorID, @Quantity, @DropOffDateTime, @CategoryID)";
+                int donorID = GetLoggedInUserID();
+                // Get selected category
+                int categoryID = Convert.ToInt32(row["FoodCategory"]);
+                if (categoryID == 0) // Validate category selection
+                {
+                    /*lblMessage.CssClass = "text-danger"; // Set a new CSS class
+                    lblMessage.Text = "Please select a valid food category.";*/
+                    return;
+                }
+                var parameters = new Dictionary<string, object>
+                {
+                    { "@Name", row["FoodName"] },
+                    { "@Description", row["Description"] },
+                    { "@ExpiryDate", row["ExpirationDate"]  },
+                    { "@DonorID", donorID },
+                    { "@Quantity", row["Quantity"] },
+                    { "@DropOffDateTime", dropoff_DateTime},
+                    { "@CategoryID", categoryID }
+                };
+
+                DatabaseHelper.ExecuteTransactionalQuery(query, parameters);
+                sucessMsg.Text = "Food Donation and Drop Off Time Saved!";
+
+
+                // Clear session and GridView
+                Session["FoodTable"] = null;
+                gvFoodItems.DataSource = null;
+                gvFoodItems.DataBind();
+
+                gvModalFoodItem.DataSource = null; // for modal grid
+                gvModalFoodItem.DataBind();
+            }
+        }
+
+
+        /*protected void btnAddFood_Click(object sender, EventArgs e)
         {
             string name = txtFoodName.Text;
             string description = txtDescription.Text;
@@ -63,7 +149,7 @@ namespace Food_Donor_Management_System
             DatabaseHelper.ExecuteNonQuery(query,parameters);
             lblMessage.Text = "Food item added successfully!";
             //LoadDonatedFood();
-        }
+        }*/
 
         private void PopulateFoodCategories()
         {

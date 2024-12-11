@@ -13,10 +13,8 @@
                 <asp:Label ID="PasswordLabel" runat="server" AssociatedControlID="txtPassword">Password:</asp:Label>
                 <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" Placeholder="Password"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="PasswordRequired" runat="server" ControlToValidate="txtPassword" ErrorMessage="Password required" ForeColor="Red" />
-                <br />
-               <p> OR </p> 
                  <!-- Create An Account Navigation Link -->
-                <asp:HyperLink ID="CreateAccountHyperLink" runat="server" ForeColor="Blue" NavigateUrl="~/Registration.aspx">Create An Account</asp:HyperLink>
+                <asp:HyperLink ID="CreateAccountHyperLink" runat="server" ForeColor="Blue" NavigateUrl="~/Registration.aspx">New here? Register</asp:HyperLink>
                 <!-- Hyperlink for Forgot Password -->
                 <!-- <asp:HyperLink ID="HyperLink1" runat="server" ForeColor="Blue" NavigateUrl="~/ForgotPassword.aspx">Forgot Password</asp:HyperLink> -->
                 <br />

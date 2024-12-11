@@ -67,5 +67,42 @@ namespace Food_Donor_Management_System.Helpers
               
             }
         }
+
+        public static void ExecuteTransactionalQuery(string query, Dictionary<string, object> parameters)
+        {
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+
+                // Start a new transaction
+                using (MySqlTransaction transaction = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        // Create and configure the MySqlCommand with the query and parameters
+                        using (MySqlCommand cmd = new MySqlCommand(query, conn, transaction))
+                        {
+                            // Add parameters to the command
+                            foreach (var param in parameters)
+                            {
+                                cmd.Parameters.AddWithValue(param.Key, param.Value);
+                            }
+
+                            // Execute the query
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        // Commit the transaction if the query was successful
+                        transaction.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        // Rollback the transaction if any error occurs
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
     }
 }
