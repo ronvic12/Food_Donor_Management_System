@@ -98,7 +98,7 @@
 }
 
 /* General styling for the dropdown */
-.dropdown {
+.dropdowns {
     font-size: 16px;
     font-family: Arial, sans-serif;
     color: #333;
@@ -112,26 +112,26 @@
 }
 
     /* Focus state for accessibility */
-    .dropdown:focus {
-        outline: none;
-        border-color: #4CAF50;
-        box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.2);
-    }
+.dropdowns:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.2);
+}
 
     /* Hover effect */
-    .dropdown:hover {
-        border-color: #4CAF50;
-    }
+.dropdowns:hover {
+    border-color: #4CAF50;
+}
 
     /* Dropdown options (items) */
-    .dropdown option {
-        font-size: 16px;
-        padding: 10px;
-        background-color: #fff;
-    }
+.dropdowns option {
+    font-size: 16px;
+    padding: 10px;
+    background-color: #fff;
+}
 
 /* Customize the dropdown list container */
-.dropdown {
+.dropdowns {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -142,17 +142,17 @@
 }
 
     /* Disable dropdown arrow on focus */
-    .dropdown::-ms-expand {
-        display: none;
-    }
+.dropdowns::-ms-expand {
+    display: none;
+}
 
 /* Add a custom arrow to the dropdown */
-.dropdown {
+.dropdowns {
     padding-right: 35px; /* Space for the arrow */
 }
 
     /* Customize the dropdown when disabled */
-    .dropdown[disabled] {
+    .dropdowns[disabled] {
         background-color: #f0f0f0;
         color: #888;
         border-color: #ddd;
@@ -161,7 +161,7 @@
 
 /* Responsive Design */
 @media (max-width: 600px) {
-    .dropdown {
+    .dropdowns {
         width: 100%; /* Make dropdown full width on smaller screens */
     }
 }

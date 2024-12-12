@@ -6,7 +6,7 @@
         <h2 style="text-align:center">Sign Up</h2>
             <h3>I am a</h3>
            <!-- Role Dropdown -->
-        <asp:DropDownList ID="ddlRole" runat="server" onchange="toggleCredentials()" OnSelectedIndexChanged="ddlRole_SelectedIndexChanged" CssClass="dropdown" >
+        <asp:DropDownList ID="ddlRole" runat="server" onchange="toggleCredentials()" OnSelectedIndexChanged="ddlRole_SelectedIndexChanged" CssClass="dropdowns" >
             <asp:ListItem Text="Select Role" Value="" />
             <asp:ListItem Text="Donor" Value="Donor" />
             <asp:ListItem Text="Recipient" Value="Recipient" />
