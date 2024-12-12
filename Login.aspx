@@ -21,7 +21,7 @@
 
                
                 <!-- Sign In Button -->
-                <asp:Button ID="btnLogin" runat="server" Text="Sign In" CommandName="Login" OnClick="Login_Authenticate" />
+                <asp:Button ID="btnLogin" runat="server" Text="Sign In" CommandName="Login" OnClick="Login_Authenticate" CssClass="btn btn-login"/>
                 <asp:Label ID="lblMessage" runat="server" ForeColor="Red" />
             </div>
 

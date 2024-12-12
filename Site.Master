@@ -48,9 +48,8 @@
                      <a class="navbar-brand" runat="server" href="~/" style="color: #ffffff">Food Community Donations</a>
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/" style="color: #ffffff">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/" style="color: #ffffff">About</a></li>
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/Login" style="color: #ffffff">Login</a></li>
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/Registration" style="color: #ffffff">Sign Up</a></li>
+                        <li class="nav-item"><a class="nav-link" runat="server" href="~/About" style="color: #ffffff">About</a></li>
+                        <li class="nav-item"><a class="nav-link" runat="server" href="~/Login" style="color: #ffffff">Sign In</a></li>
                                </ul>
                 </div>
             </div>

@@ -9,7 +9,7 @@
         <asp:HiddenField ID="RequestFoodItemID" runat="server" />
         <asp:HiddenField ID="RequestRecipientID" runat="server" />
         <asp:HiddenField ID="RequestDecision" runat="server" />
-        
+
 
             <!-- Include Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -346,6 +346,8 @@
                 </asp:Panel>
             </div>
 
+
+         <!-- Use Update Panel to have smooth transition of the flow -->
        
             <div class ="dashboard_table">
                     <asp:Panel ID="pnlRecipientDashboard" runat="server" Width="100%">
