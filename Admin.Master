@@ -57,7 +57,7 @@
        </asp:ContentPlaceHolder>
        <hr />
        <footer>
-           <p>&copy; <%: DateTime.Now.Year %> - Food Community Donations</p>
+           <p>&copy; <%: DateTime.Now.Year %> - FOOD DONATIONS MADE EASY</p>
        </footer>
    </div>
     </form>

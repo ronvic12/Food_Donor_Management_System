@@ -61,7 +61,7 @@
                           </div>
 
                           <div style="margin-bottom: 15px;">
-                              <asp:Label runat="server" AssociatedControlID="txtExpiryDate" style="display: block; font-weight: bold; margin-bottom: 5px;">Expired Date</asp:Label>
+                              <asp:Label runat="server" AssociatedControlID="txtExpiryDate" style="display: block; font-weight: bold; margin-bottom: 5px;">Expiration Date</asp:Label>
                               <asp:TextBox ID="txtExpiryDate" runat="server" TextMode="Date" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;"></asp:TextBox>
                           </div>
 

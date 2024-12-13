@@ -37,7 +37,7 @@ namespace Food_Donor_Management_System
                 Session["UserEmail"] = email;
                 Session["UserID"] = id;
 
-                if (role == "Admin") Response.Redirect("AdminDashboard.aspx");
+                if (role == "Admin") Response.Redirect("~/Admin/AdminDashboard.aspx");
                 else if (role == "Donor") Response.Redirect("DonorDashboard.aspx");
                 else if (role == "Recipient") Response.Redirect("RecipientDashboard.aspx");
             }

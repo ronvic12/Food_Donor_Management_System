@@ -2,8 +2,8 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <section>
-         <h2>About Us: Food Community Donation</h2>
-        <p>At the Food Community Donation System, we are dedicated to solving the challenges of food insecurity, inefficient logistics, and food safety. Our mission is to bridge the gap between donors and recipients by offering a simple, efficient, and transparent donation platform that ensures food reaches those who need it the most.</p>
+         <h2>About Us: FOOD DONATIONS MADE EASY</h2>
+        <p>At the FOOD DONATIONS MADE EASY System, we are dedicated to solving the challenges of food insecurity, inefficient logistics, and food safety. Our mission is to bridge the gap between donors and recipients by offering a simple, efficient, and transparent donation platform that ensures food reaches those who need it the most.</p>
     </section>
 
    <section>

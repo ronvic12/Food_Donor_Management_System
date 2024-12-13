@@ -47,46 +47,44 @@
          <%--Site Scripts--%>
      </Scripts>
  </asp:ScriptManager>
+
        <nav class="navbar navbar-expand-sm navbar-toggleable-sm custom-navbar">
-           <h3>Food Community Donations</h3>
-        <div class="container-fluid p-0">
+
+    <div class="container-fluid p-0">  
              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
-    </button>
-               <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between" id="navbarNav">
-                   <ul class="navbar-nav ms-auto">
-                         <li class="nav-item dropdown" id ="drop">
-                               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"
-                                <asp:Label ID="lblUsername" runat="server" Text="Account"></asp:Label>
-                                </a>
-
-                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-
-                                <li>
-                                    <asp:LinkButton ID="lnkProfile" runat="server" CssClass="dropdown-item" PostBackUrl="~/Profile.aspx">My Profile</asp:LinkButton>
-                                </li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li>
-                                    <asp:LinkButton ID="lnkLogout" runat="server" CssClass="dropdown-item" OnClick="lnkLogout_Click">Log Out</asp:LinkButton>
-                                </li>
-                            </ul>
-
-
-                            </li>
-                   </ul>
-                </div>
-       
+                 </button>
+        <div class="collapse navbar-collapse d-flex align-items-center justify-content-between" id="navbarNav">
+                   <h3 class="navbar-title m-0">FOOD DONATIONS MADE EASY</h3>
+               
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item dropdown" id="drop">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <asp:Label ID="lblUsername" runat="server" Text="Account"></asp:Label>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li>
+                            <asp:LinkButton ID="lnkProfile" runat="server" CssClass="dropdown-item" PostBackUrl="~/Profile.aspx">My Profile</asp:LinkButton>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <asp:LinkButton ID="lnkLogout" runat="server" CssClass="dropdown-item" OnClick="lnkLogout_Click">Log Out</asp:LinkButton>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
         </div>
-    </nav>
+    </div>
+</nav>
 
      <div class="container body-content">
          <asp:ContentPlaceHolder ID="DashboardContent" runat="server">
          </asp:ContentPlaceHolder>
          <hr />
          <footer>
-             <p>&copy; <%: DateTime.Now.Year %> - Food Community Donations</p>
+             <p>&copy; <%: DateTime.Now.Year %> - FOOD DONATIONS MADE EASY</p>
          </footer>
       </div>
     </form>

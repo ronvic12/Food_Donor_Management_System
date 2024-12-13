@@ -4,8 +4,88 @@
     place-items: center; /* Centers both horizontally and vertically */
     height: 50vh;
 }
-#main_section {
+#pageFooter {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 0; /* Place the footer behind the content */
+    background: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+    color: white;
+    padding: 10px 20px;
     text-align: center;
+}
+
+#MainContent {
+    position: relative; /* Keep the content above the footer */
+    z-index: 1;
+    padding-bottom: 50px; /* To make space for the footer */
+}
+#bkgimage {
+    min-height: 100vh; /* Full viewport height */
+    width: 100%;
+    display: flex; /* This is for title and subtitle*/
+    justify-content: center;
+    align-items: center;
+    background-image: url('/Images/foodmain.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat; /* Avoid tiling */
+    position: relative; /* Needed for overlay */
+    margin: 0;
+    padding: 0;
+}
+
+    #bkgimage::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.5); /* Adjust the color and transparency */
+        z-index: 1;
+    }
+#main_section {
+    position: relative; /* Keep content above the overlay */
+    z-index: 2;
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+    /* Button styling */
+    #main_section a {
+        color: black;
+        background-color: white;
+        border: 2px solid #333;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        text-decoration: none;
+        padding: 10px 20px;
+        font-weight: bold;
+    }
+
+#aspnetTitle {
+    font-family: "Work Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-size: 65px;
+    font-weight: 500;
+    font-style: normal;
+    letter-spacing: -4.5pt; /* Negative value reduces space between letters */
+    color: white;
+    text-shadow: 2px 2px 5px black; /* Shadow with offset and blur */
+}
+.lead {
+    font-family: 'Tangerine', serif;
+    font-size: 100px;
+    text-shadow: 4px 4px 4px #aaa;
+    font-weight: 400;
+    letter-spacing: -4.5pt; /* Negative value reduces space between letters */
+    /*font-family: lumios-marker, cursive;
+    font-style: italic;
+    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff;
+    filter: drop-shadow(0 0 5px #fff) drop-shadow(0 0 10px #fff) drop-shadow(0 0 15px #fff);
+    font-weight: 400;*/
 }
 .logincontainer {
     display: grid;
@@ -18,6 +98,8 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Optional: subtle shadow */
     background-color: #fff; /* White background */
 }
+
+
 
 .registercontainer {
     max-width: 400px; /* Adjust width for your form */
@@ -43,8 +125,12 @@
         border-radius: 4px;
     }
 .custom-navbar {
+    display: flex; /* Make the nav a flex container */
+    justify-content: center; /* Center the div horizontally within the nav */
+    align-items: center; /* Center the div vertically within the nav (if needed) */
     background-color: #CBC3E3; /* Custom background color */
     color: white;
+    padding: 10px 0; /* Adjust padding as needed */
 }
 
     .custom-navbar .nav-link {
@@ -55,7 +141,18 @@
             color: #ffc107; /* Change link color on hover */
         }
 
+.navbar-title {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 1.5rem; /* Adjust size as needed */
+    margin-left: 3%;
+}
 
+
+.text-center h3 {
+    margin: 0; /* Remove default margins */
+    font-weight: bold; /* Make the title bolder */
+}
 .nav-link:hover {
     color: #007bff; /* Hover color */
     background-color: #444444; /* Optional: change background on hover */

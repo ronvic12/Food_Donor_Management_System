@@ -15,6 +15,10 @@
     <webopt:bundlereference runat="server" path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
      <link href="css/main.css" rel="stylesheet" type="text/css" />
+       <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Tangerine">
+
+  <link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Inter:wght@600&family=Work+Sans:wght@500&display=swap" rel="stylesheet">
 
 </head>
 <body>
@@ -39,13 +43,13 @@
         </asp:ScriptManager>
 
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm" style="background-color: #212529; color: #ffffff">
-            <div class="container">
+            <div class="container-fluid p-0">
                 <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
-                     <a class="navbar-brand" runat="server" href="~/" style="color: #ffffff">Food Community Donations</a>
+                     <a class="navbar-brand" runat="server" href="~/" style="color: #ffffff">FOOD DONATIONS MADE EASY</a>
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/" style="color: #ffffff">Home</a></li>
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/About" style="color: #ffffff">About</a></li>
@@ -54,17 +58,19 @@
                 </div>
             </div>
         </nav>
-        <div class="container body-content">
-            <asp:ContentPlaceHolder ID="MainContent" runat="server">
-            </asp:ContentPlaceHolder>
-            <hr />
-            <footer>
-                <p>&copy; <%: DateTime.Now.Year %> - Food Community Donations</p>
+
+           <asp:ContentPlaceHolder ID="MainContent" runat="server">
+         </asp:ContentPlaceHolder>
+
+              <footer id="pageFooter">
+                <p>&copy; <%: DateTime.Now.Year %> - FOOD DONATIONS MADE EASY</p>
             </footer>
-        </div>
     </form>
+
+ 
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/Scripts/bootstrap.js") %>
     </asp:PlaceHolder>
 </body>
+
 </html>

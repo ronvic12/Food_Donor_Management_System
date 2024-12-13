@@ -49,6 +49,7 @@
         function showFoodDetails(foodItemsJSON) {
 
             const foodItems = JSON.parse(foodItemsJSON);
+            console.log(foodItems);
             // Get the container for food details
             const container = document.getElementById("foodDetailsContainer");
             // Clear previous content
@@ -317,7 +318,7 @@
                                        class="btn btn-info" 
                                        data-toggle="modal" 
                                        data-target="#foodDetailsModal"
-                                       onclick="showFoodDetails('<%# Server.HtmlEncode(Eval("SerializedFoodItems").ToString()) %>')">  <!-- To ensure protection in html coding and json read it as string -->
+                                       onclick="showFoodDetails('<%# Server.HtmlEncode(Eval("SerializedFoodItems").ToString().Replace("'", "\\'")) %>')">  <!-- To ensure protection in html coding and json read it as string -->
                                        View Food Details
                                    </button>
 
@@ -367,7 +368,7 @@
                                                          class="btn btn-info" 
                                                          data-toggle="modal" 
                                                          data-target="#recipientDetailModal"
-                                                         onclick="showRecipients('<%# Server.HtmlEncode(Eval("SerializedRecipients").ToString()) %>')">  <!-- To ensure protection in html coding and json read it as string -->
+                                                         onclick="showRecipients('<%# Server.HtmlEncode(Eval("SerializedRecipients").ToString().Replace("'","\\'")) %>')">  <!-- To ensure protection in html coding and json read it as string -->
                                                          View Recipient
                                                      </button>
                                           </div>
@@ -413,7 +414,7 @@
                                            class="btn btn-info" 
                                            data-toggle="modal" 
                                            data-target="#inventoryDetailsModal"
-                                           onclick="showInventory('<%# Server.HtmlEncode(Eval("SerializedInventory").ToString()) %>')">  <!-- To ensure protection in html coding and json read it as string -->
+                                           onclick="showInventory('<%# Server.HtmlEncode(Eval("SerializedInventory").ToString().Replace("'","\\'")) %>')">  <!-- To ensure protection in html coding and json read it as string -->
                                            View Inventory
                                        </button>
                                 </div>
@@ -462,7 +463,7 @@
                                             class="btn btn-info" 
                                             data-toggle="modal" 
                                             data-target="#deliveryDetailsModal"
-                                            onclick="showDelivery('<%# Server.HtmlEncode(Eval("SerializedDelivery").ToString()) %>')">  <!-- To ensure protection in html coding and json read it as string -->
+                                            onclick="showDelivery('<%# Server.HtmlEncode(Eval("SerializedDelivery").ToString().Replace("'","\\'")) %>')">  <!-- To ensure protection in html coding and json read it as string -->
                                             View Delivery Details
                                         </button>
                                       </div>
@@ -504,7 +505,7 @@
          h4 {
             display: inline-block;   /* Makes the width adjust to the content */
             padding: 10px;
-            border: 2px solid #007BFF; /* Border will adjust based on content length */
+            border: 1px solid black; /* Border will adjust based on content length */
             border-radius: 10px;
             background-color: lightblue;
             font-size:20px;
@@ -517,6 +518,12 @@
             margin-left: auto;          /* Center the line horizontally */
             margin-right: auto;         /* Center the line horizontally */
         }
+
+
+      .recipientRequests{background-color:#ff7474}
+      .available{border: 2px solid #3a8f33;background-color:#ffffff}
+
+      .deliver{background-color:#62d268}
 
     </style>
 </asp:Content>

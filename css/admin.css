@@ -10,12 +10,14 @@
     border: 1px solid #ccc; /* Styling for the tables */
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Add some shadow for visual appeal */
     overflow-y: auto; /* Enable scrolling for large content */
+    padding:1em;
 }
 .appointment {
     display: flex;
     justify-content: space-between;
     align-items: center;
     border: 1px solid #ddd;
+    padding:1em;
 }
 
     .appointment span {
@@ -28,6 +30,7 @@
     justify-content: space-between;
     align-items: center;
     border: 1px solid #ddd;
+    padding: 1em;
 }
 
     .inventory span {
@@ -41,6 +44,7 @@
     justify-content: space-between;
     align-items: center;
     border: 1px solid #ddd;
+    padding: 1em;
 }
 
     .requests span {
@@ -53,6 +57,7 @@
     justify-content: space-between;
     align-items: center;
     border: 1px solid #ddd;
+    padding: 1em;
 }
     .donation span {
         margin-right: 10px;
