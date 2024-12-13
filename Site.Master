@@ -42,14 +42,14 @@
             </Scripts>
         </asp:ScriptManager>
 
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm" style="background-color: #212529; color: #ffffff">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm" style="background-color: #212529; color: #ffffff;padding: 1em">
             <div class="container-fluid p-0">
                 <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
-                     <a class="navbar-brand" runat="server" href="~/" style="color: #ffffff">FOOD DONATIONS MADE EASY</a>
+                     <a class="navbar-brand" runat="server" href="~/" id="navbrand_title">FOOD DONATIONS MADE EASY</a>
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/" style="color: #ffffff">Home</a></li>
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/About" style="color: #ffffff">About</a></li>

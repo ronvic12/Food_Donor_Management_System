@@ -64,6 +64,13 @@
         padding: 10px 20px;
         font-weight: bold;
     }
+        /* Hover effect */
+        #main_section a:hover {
+            color: white;
+            background-color: #333;
+            border-color: #666;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
 
 #aspnetTitle {
     font-family: "Work Sans", sans-serif;
@@ -75,17 +82,21 @@
     color: white;
     text-shadow: 2px 2px 5px black; /* Shadow with offset and blur */
 }
+#navbrand_title {
+    font-family: "Work Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    letter-spacing: -1.5pt; /* Negative value reduces space between letters */
+    color: white;
+    text-shadow: 2px 2px 5px black; /* Shadow with offset and blur */
+}
 .lead {
     font-family: 'Tangerine', serif;
     font-size: 100px;
     text-shadow: 4px 4px 4px #aaa;
     font-weight: 400;
     letter-spacing: -4.5pt; /* Negative value reduces space between letters */
-    /*font-family: lumios-marker, cursive;
-    font-style: italic;
-    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff;
-    filter: drop-shadow(0 0 5px #fff) drop-shadow(0 0 10px #fff) drop-shadow(0 0 15px #fff);
-    font-weight: 400;*/
 }
 .logincontainer {
     display: grid;
