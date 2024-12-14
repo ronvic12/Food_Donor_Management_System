@@ -2,28 +2,38 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="DashboardContent" runat="server">
 
-    
+    <style>
+     .gridview-style th, .gridview-style td {
+         border: 2px solid black;
+         padding: 5px;
+        }
+     .gridview-style {
+         border-collapse: collapse;
+     }
+
+    </style>
    
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
      
 
     <div>
-            <h2>Food Donation List</h2>
-        <asp:GridView ID="gvFoodItems" runat="server" AutoGenerateColumns="False">
-    <Columns>
-        <asp:BoundField DataField="Quantity" HeaderText="Quantity" />
-        <asp:BoundField DataField="FoodCategory" HeaderText="Food Category" />
-        <asp:BoundField DataField="FoodName" HeaderText="Food Name" />
-        <asp:BoundField DataField="Description" HeaderText="Description" />
-        <asp:BoundField DataField="ExpirationDate" HeaderText="Expiration Date" DataFormatString="{0:MM/dd/yyyy}" HtmlEncode="false"/>
-    </Columns>
-
-</asp:GridView>
+ 
 
     </div>
     
     <div class ="fooddonationContainer">
+           <h2 class="title-center">Food Donation List</h2>
+                    <asp:GridView ID="gvFoodItems" runat="server" AutoGenerateColumns="False"  CssClass="gridview-style">
+                <Columns>
+                    <asp:BoundField DataField="Quantity" HeaderText="Quantity" />
+                    <asp:BoundField DataField="FoodCategory" HeaderText="Food Category" />
+                    <asp:BoundField DataField="FoodName" HeaderText="Food Name" />
+                    <asp:BoundField DataField="Description" HeaderText="Description" />
+                    <asp:BoundField DataField="ExpirationDate" HeaderText="Expiration Date" DataFormatString="{0:MM/dd/yyyy}" HtmlEncode="false"/>
+                </Columns>
+
+            </asp:GridView>
         <!-- Button to trigger the modal -->
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#donateFoodModal">
           Donate Food
@@ -40,30 +50,30 @@
                       <div class="modal-body">
                         <form style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
 
-                          <div style="margin-bottom: 15px;">
-                              <asp:Label runat="server" AssociatedControlID="ddlCategories" style="display: block; font-weight: bold; margin-bottom: 5px;">Food Category</asp:Label>
-                              <asp:DropDownList ID="ddlCategories" runat="server" CssClass="form-control"></asp:DropDownList>
-                          </div>
+                              <div style="margin-bottom: 15px;">
+                                  <asp:Label runat="server" AssociatedControlID="ddlCategories" style="display: block; font-weight: bold; margin-bottom: 5px;">Food Category</asp:Label>
+                                  <asp:DropDownList ID="ddlCategories" runat="server" CssClass="form-control"></asp:DropDownList>
+                              </div>
 
-                          <div style="margin-bottom: 15px;">
-                              <asp:Label runat="server" AssociatedControlID="txtFoodName" style="display: block; font-weight: bold; margin-bottom: 5px;">Food Name</asp:Label>
-                              <asp:TextBox ID="txtFoodName" runat="server" Placeholder="Enter food name" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;"></asp:TextBox>
-                          </div>
+                              <div style="margin-bottom: 15px;">
+                                  <asp:Label runat="server" AssociatedControlID="txtFoodName" style="display: block; font-weight: bold; margin-bottom: 5px;">Food Name</asp:Label>
+                                  <asp:TextBox ID="txtFoodName" runat="server" Placeholder="Enter food name" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;"></asp:TextBox>
+                              </div>
 
-                          <div style="margin-bottom: 15px;">
-                              <asp:Label runat="server" AssociatedControlID="txtQuantity" style="display: block; font-weight: bold; margin-bottom: 5px;">Quantity</asp:Label>
-                              <asp:TextBox ID="txtQuantity" runat="server" TextMode="Number" min="1" max="100" step="1" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;"></asp:TextBox>
-                          </div>
+                              <div style="margin-bottom: 15px;">
+                                  <asp:Label runat="server" AssociatedControlID="txtQuantity" style="display: block; font-weight: bold; margin-bottom: 5px;">Quantity</asp:Label>
+                                  <asp:TextBox ID="txtQuantity" runat="server" TextMode="Number" min="1" max="100" step="1" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;"></asp:TextBox>
+                              </div>
 
-                          <div style="margin-bottom: 15px;">
-                              <asp:Label runat="server" AssociatedControlID="txtDescription" style="display: block; font-weight: bold; margin-bottom: 5px;">Description(Optional)</asp:Label>
-                              <asp:TextBox ID="txtDescription" runat="server" TextMode="MultiLine" Placeholder="Describe the food item" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; height: 100px;"></asp:TextBox>
-                          </div>
+                              <div style="margin-bottom: 15px;">
+                                  <asp:Label runat="server" AssociatedControlID="txtExpiryDate" style="display: block; font-weight: bold; margin-bottom: 5px;">Expiration Date</asp:Label>
+                                  <asp:TextBox ID="txtExpiryDate" runat="server" TextMode="Date" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;"></asp:TextBox>
+                              </div>
 
-                          <div style="margin-bottom: 15px;">
-                              <asp:Label runat="server" AssociatedControlID="txtExpiryDate" style="display: block; font-weight: bold; margin-bottom: 5px;">Expiration Date</asp:Label>
-                              <asp:TextBox ID="txtExpiryDate" runat="server" TextMode="Date" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;"></asp:TextBox>
-                          </div>
+                            <div style="margin-bottom: 15px;">
+                                <asp:Label runat="server" AssociatedControlID="txtDescription" style="display: block; font-weight: bold; margin-bottom: 5px;">Description(Optional)</asp:Label>
+                                <asp:TextBox ID="txtDescription" runat="server" TextMode="MultiLine" Placeholder="Describe the food item" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; height: 100px;"></asp:TextBox>
+                            </div>
 
                         </form>
                       </div>
@@ -87,7 +97,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <asp:GridView ID="gvModalFoodItem" runat="server" AutoGenerateColumns="False">
+                                <asp:GridView ID="gvModalFoodItem" runat="server" AutoGenerateColumns="False"  CssClass="gridview-style">
                                 <Columns>
                                     <asp:BoundField DataField="Quantity" HeaderText="Quantity" />
                                     <asp:BoundField DataField="FoodCategory" HeaderText="Food Category" />

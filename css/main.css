@@ -156,9 +156,21 @@
     flex-grow: 1;
     text-align: center;
     font-size: 1.5rem; /* Adjust size as needed */
-    margin-left: 3%;
 }
 
+.nvtitle {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Align to the right */
+    width: 100%; /* Ensure it takes up the full width of the navbar */
+    padding-left:14%;
+}
+/* Food donation list and Food doantion made easy matching title*/
+.title-center {
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
 
 .text-center h3 {
     margin: 0; /* Remove default margins */
@@ -274,3 +286,11 @@
     }
 }
 
+
+/*Donor Dashboard*/
+.fooddonationContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Adjust spacing as needed */
+    padding-top: 20px; /* Space above the first item */
+}

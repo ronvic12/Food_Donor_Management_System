@@ -48,15 +48,15 @@
      </Scripts>
  </asp:ScriptManager>
 
-       <nav class="navbar navbar-expand-sm navbar-toggleable-sm custom-navbar">
-
-    <div class="container-fluid p-0">  
-             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-                 </button>
+      <nav class="navbar navbar-expand-sm navbar-toggleable-sm custom-navbar">
+    <div class="container-fluid p-0">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
         <div class="collapse navbar-collapse d-flex align-items-center justify-content-between" id="navbarNav">
-                   <h3 class="navbar-title m-0">FOOD DONATIONS MADE EASY</h3>
-               
+            <div class="nvtitle d-flex align-items-center justify-content-center mx-auto">
+                <h3 class="navbar-title m-0">FOOD DONATIONS MADE EASY</h3>
+            </div>
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item dropdown" id="drop">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -78,6 +78,7 @@
         </div>
     </div>
 </nav>
+
 
      <div class="container body-content">
          <asp:ContentPlaceHolder ID="DashboardContent" runat="server">

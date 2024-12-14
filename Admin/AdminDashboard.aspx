@@ -304,7 +304,7 @@
             <div class ="dashboard_table">
       
             <asp:Panel ID="pnlDonorDashboard" runat="server" Width="100%">
-            <h3 style="text-align: center;">Donor Dashboard: Drop Off Appointments</h3>
+            <h3 style="text-align: center;">Donor Dashboard: Drop Off</h3>
                 <hr>
             <div id="appointmentsContainer">
                 <div class="appointmentGroup">

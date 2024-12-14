@@ -12,6 +12,9 @@
     }
 
       .request-button {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
         background-color: #4CAF50;  /* Green background */
         color: white;               /* White text */
         padding: 8px 20px;         /* Padding around the button */
@@ -20,6 +23,7 @@
         cursor: pointer;           /* Change cursor to pointer */
         text-align: center;         /* Center text */
         font-size: 16px;            /* Font size */
+        padding: 10px 20px;
     }
 
     .request-button:hover {
@@ -40,7 +44,6 @@
         <asp:BoundField DataField="Description" HeaderText="Description" />
         <asp:BoundField DataField="ExpirationDate" HeaderText="Expiration Date" 
             DataFormatString="{0:MM/dd/yyyy}" HtmlEncode="false"/>
-        <asp:BoundField DataField="Status" HeaderText="Status" />
         <asp:ButtonField CommandName="Request" HeaderText="Request Food Item" Text="Request" ButtonType="Button" ControlStyle-CssClass="request-button"/>
     </Columns>
 </asp:GridView>
