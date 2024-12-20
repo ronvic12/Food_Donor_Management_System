@@ -4,16 +4,21 @@
     place-items: center; /* Centers both horizontally and vertically */
     height: 50vh;
 }
-#pageFooter {
-    position: absolute;
+
+/* Footer section style */
+#footerSection {
+    background-color: #f1f1f1; /* Light background for footer */
+    padding: 20px; /* Add some padding for spacing */
+    text-align: center; /* Center the content */
+    position: relative; /* Make sure the footer stays in place */
     bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 0; /* Place the footer behind the content */
-    background: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
+    width: 100%;
+}
+/* Footer styling */
+#pageFooter {
+    font-size: 14px;
+    color: #555; /* Dark gray color for text */
+    margin: 0;
 }
 
 #MainContent {
@@ -154,17 +159,17 @@
 
 .navbar-title {
     flex-grow: 1;
-    text-align: center;
+ /*   text-align: center;*/
     font-size: 1.5rem; /* Adjust size as needed */
 }
 
-.nvtitle {
+/*.nvtitle {
     display: flex;
     align-items: center;
-    justify-content: flex-end; /* Align to the right */
-    width: 100%; /* Ensure it takes up the full width of the navbar */
-    padding-left:14%;
-}
+    justify-content: flex-end;*/ /* Align to the right */
+    /*width: 100%;*/ /* Ensure it takes up the full width of the navbar */
+    /*padding-left:14%;
+}*/
 /* Food donation list and Food doantion made easy matching title*/
 .title-center {
     text-align: center;

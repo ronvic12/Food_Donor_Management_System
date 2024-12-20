@@ -11,5 +11,4 @@
             <p><a runat="server" href="~/Login" class="btn btn-primary btn-md">Donate Today</a></p>
         </section>
     </main>
-
 </asp:Content>

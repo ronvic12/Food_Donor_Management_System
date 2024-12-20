@@ -61,10 +61,12 @@
 
            <asp:ContentPlaceHolder ID="MainContent" runat="server">
          </asp:ContentPlaceHolder>
-
-              <footer id="pageFooter">
-                <p>&copy; <%: DateTime.Now.Year %> - FOOD DONATIONS MADE EASY</p>
-            </footer>
+<section id="footerSection">
+    <footer id="pageFooter">
+        <p>&copy; <%: DateTime.Now.Year %> - FOOD DONATIONS MADE EASY</p>
+    </footer>
+</section>
+           
     </form>
 
  

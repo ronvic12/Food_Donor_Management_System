@@ -52,14 +52,14 @@
                 </div>
             </div>
         </nav>
-         <div class="container body-content">
-       <asp:ContentPlaceHolder ID="AdminContent" runat="server">
-       </asp:ContentPlaceHolder>
-       <hr />
+
+             <asp:ContentPlaceHolder ID="AdminContent" runat="server">
+     </asp:ContentPlaceHolder>
+      
        <footer>
            <p>&copy; <%: DateTime.Now.Year %> - FOOD DONATIONS MADE EASY</p>
        </footer>
-   </div>
+  
     </form>
 </body>
 </html>

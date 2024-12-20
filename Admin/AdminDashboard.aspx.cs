@@ -139,7 +139,6 @@ namespace Food_Donor_Management_System
 
         private void LoadDropOffAppointments()
         {
-            // CAST(GETDATE() AS DATE) to get today's date and future date of appointments
             string query = @"
             SELECT 
              u.Name AS DonorName,
@@ -160,7 +159,7 @@ namespace Food_Donor_Management_System
         WHERE
             fi.DropOffDateTime >= CURDATE() AND fi.Status = @Status
         ORDER BY
-            fi.DropOffDateTime "; // make sure to add status to pending
+            fi.DropOffDateTime "; 
 
 
             var parameters = new Dictionary<string, object>

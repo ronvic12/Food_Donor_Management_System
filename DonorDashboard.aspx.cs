@@ -47,7 +47,12 @@ namespace Food_Donor_Management_System
             dr["FoodName"] = txtFoodName.Text;
             dr["Description"] = txtDescription.Text;
             dr["ExpirationDate"] = DateTime.Parse(txtExpiryDate.Text);
-
+            if (dr["FoodCategory"] == null) // Validate category selection
+            {
+                lblMessage.CssClass = "text-danger";
+                lblMessage.Text = "Please select a valid food category.";
+                return;
+            }
             dt.Rows.Add(dr);
 
             gvFoodItems.DataSource = dt; // for the main grid. 
@@ -76,14 +81,7 @@ namespace Food_Donor_Management_System
                 string query = "INSERT INTO FoodItems (Name, Description, ExpiryDate, DonorID, Quantity, DropOffDateTime, CategoryID) " +
                       "VALUES (@Name, @Description, @ExpiryDate, @DonorID, @Quantity, @DropOffDateTime, @CategoryID)";
                 int donorID = GetLoggedInUserID();
-                // Get selected category
                 int categoryID = Convert.ToInt32(row["FoodCategory"]);
-                if (categoryID == 0) // Validate category selection
-                {
-                    /*lblMessage.CssClass = "text-danger"; // Set a new CSS class
-                    lblMessage.Text = "Please select a valid food category.";*/
-                    return;
-                }
                 var parameters = new Dictionary<string, object>
                 {
                     { "@Name", row["FoodName"] },
@@ -104,7 +102,7 @@ namespace Food_Donor_Management_System
                 gvFoodItems.DataSource = null;
                 gvFoodItems.DataBind();
 
-                gvModalFoodItem.DataSource = null; // for modal grid
+                gvModalFoodItem.DataSource = null; 
                 gvModalFoodItem.DataBind();
             }
         }

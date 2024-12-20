@@ -22,7 +22,8 @@ namespace Food_Donor_Management_System
         }
         public enum FoodStatus
         {
-            Available
+            Available,
+            Requested
         }
         private void LoadAvailableFood()
         {
@@ -50,12 +51,7 @@ namespace Food_Donor_Management_System
             gvAvailableFood.DataSource = DatabaseHelper.ExecuteQuery(query, parameters);
             gvAvailableFood.DataBind();
         }
-        public enum Status
-        {
-         
-            Requested,
-            Delivered
-        }
+   
         protected void gvAvailableFood_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             if (e.CommandName == "Request")
@@ -91,7 +87,7 @@ namespace Food_Donor_Management_System
 
                 var updateParams = new Dictionary<string, object>
                  {
-                     {"@status",Status.Requested.ToString()},
+                     {"@status",FoodStatus.Requested.ToString()},
                      { "@FoodItemID",foodItemID}
                  };
                 DatabaseHelper.ExecuteNonQuery(updateQuery, updateParams);

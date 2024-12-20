@@ -54,9 +54,8 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse d-flex align-items-center justify-content-between" id="navbarNav">
-            <div class="nvtitle d-flex align-items-center justify-content-center mx-auto">
-                <h3 class="navbar-title m-0">FOOD DONATIONS MADE EASY</h3>
-            </div>
+           
+                <h3 class="navbar-title">FOOD DONATIONS MADE EASY</h3>
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item dropdown" id="drop">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
