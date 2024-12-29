@@ -36,9 +36,8 @@ namespace Food_Donor_Management_System
                 Session["UserRole"] = role;
                 Session["UserEmail"] = email;
                 Session["UserID"] = id;
-
-                if (role == "Admin") Response.Redirect("~/Admin/AdminDashboard.aspx");
-                else if (role == "Donor") Response.Redirect("DonorDashboard.aspx");
+                // Consider add cookieform to make it recognizable on the server.
+                 if (role == "Donor") Response.Redirect("DonorDashboard.aspx");
                 else if (role == "Recipient") Response.Redirect("RecipientDashboard.aspx");
             }
             else

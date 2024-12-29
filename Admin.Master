@@ -21,8 +21,6 @@
 </head>
 <body>
     <form id="form1" runat="server">
-
-
          <asp:ScriptManager runat="server">
              <Scripts>
                  <%--To learn more about bundling scripts in ScriptManager see https://go.microsoft.com/fwlink/?LinkID=301884 --%>
@@ -42,16 +40,19 @@
              </Scripts>
         </asp:ScriptManager>
 
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm>
-            <div class="container-fluid p-0" style="background-color: #003366; color: #ffffff">
-               <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
-                   <span class="navbar-brand" style= "color: #ffffff">Hello Admin</span>
-                  <ul class="navbar-nav ms-auto">
-                      <li class="nav-item"> <asp:LinkButton ID="lnkLogout" runat="server" CssClass="dropdown-item" OnClick="lnkLogout_Click" style= "color: #ffffff">Log Out</asp:LinkButton></li>
-                  </ul>
-                </div>
-            </div>
-        </nav>
+
+         <asp:Panel runat="server" ID="pnlAdminNav" Visible="false" CssClass="large-12 columns">
+                <nav class="navbar navbar-expand-sm navbar-toggleable-sm>
+                    <div class="container-fluid p-0" style="background-color: #003366; color: #ffffff">
+                        <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+                            <span class="navbar-brand" style= "color: #ffffff">Hello Admin</span>
+                            <ul class="navbar-nav ms-auto">
+                                <li class="nav-item"> <asp:LinkButton ID="lnkLogout" runat="server" CssClass="dropdown-item" OnClick="lnkLogout_Click" style= "color: #ffffff">Log Out</asp:LinkButton></li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+           </asp:Panel>
 
              <asp:ContentPlaceHolder ID="AdminContent" runat="server">
      </asp:ContentPlaceHolder>
