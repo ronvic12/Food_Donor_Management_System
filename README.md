@@ -28,7 +28,7 @@ Solution:
 
 
 ## Code Snippets:
-## Food Donation Grid View
+## Donor Dashboard
 ### Front-End Code 
 - Food Donation Grid View
 ```xml
@@ -67,7 +67,6 @@ Image Output
 
 ### Backend Code
 - The GetFoodTable method is a helper method to store temporary FoodItem on the memory.
-
 
 ```csharp
 private DataTable GetFoodTable()
@@ -162,4 +161,77 @@ protected void SaveAppointment_Click(object sender, EventArgs e)
   }
 
 ```
+
+## Recipient Dashboard
+
+### Recipient Dashboard Grid View(Front-End Code)
+```xml
+<asp:GridView ID="gvAvailableFood" runat="server" AutoGenerateColumns="False" 
+    OnRowCommand="gvAvailableFood_RowCommand" DataKeyNames="FoodItemID" 
+    CssClass="gridview-style"> 
+    <Columns>
+        <asp:BoundField DataField="FoodItemID" HeaderText="Food Item ID" Visible="false" />
+        <asp:BoundField DataField="Quantity" HeaderText="Quantity" />
+        <asp:BoundField DataField="FoodCategory" HeaderText="Food Category" />
+        <asp:BoundField DataField="FoodName" HeaderText="Food Name" />
+        <asp:BoundField DataField="Description" HeaderText="Description" />
+        <asp:BoundField DataField="ExpirationDate" HeaderText="Expiration Date" 
+            DataFormatString="{0:MM/dd/yyyy}" HtmlEncode="false"/>
+        <asp:ButtonField CommandName="Request" HeaderText="Request Food Item" Text="Request" ButtonType="Button" ControlStyle-CssClass="request-button"/>
+    </Columns>
+</asp:GridView>
+```
+Image Output:
+
+
+
+### Back-End Code
+
+```csharp
+protected void gvAvailableFood_RowCommand(object sender, GridViewCommandEventArgs e)
+{
+    if (e.CommandName == "Request")
+    {
+        // Get the logged-in user ID
+        int? recipientID = GetLoggedInUserID();
+        if (recipientID == null || recipientID <= 0)
+        {
+            lblError.Text = "You must be logged in to make a request.";
+            lblError.Visible = true;
+            return; // Exit the method
+        }
+
+        // Get the row index
+        int rowIndex = Convert.ToInt32(e.CommandArgument);
+        int foodItemID = Convert.ToInt32(gvAvailableFood.DataKeys[rowIndex]["FoodItemID"]);
+
+        // Insert request with ON DUPLICATE KEY UPDATE
+        string query = "INSERT INTO Requests (FoodItemID, RecipientID, Status) VALUES (@FoodItemID, @RecipientID, 'Pending') " +
+                       "ON DUPLICATE KEY UPDATE Status = 'Pending'";
+
+        var insertParams = new Dictionary<string, object>
+        {
+            { "@FoodItemID", foodItemID },
+            { "@RecipientID", recipientID }
+        };
+
+        DatabaseHelper.ExecuteNonQuery(query, insertParams);
+
+        // Update food item status
+        string updateQuery = "UPDATE FoodItems SET Status = @status WHERE ID = @FoodItemID";
+        var updateParams = new Dictionary<string, object>
+        {
+            { "@status", FoodStatus.Requested.ToString() },
+            { "@FoodItemID", foodItemID }
+        };
+
+        DatabaseHelper.ExecuteNonQuery(updateQuery, updateParams);
+
+        // Refresh the GridView
+        LoadAvailableFood();
+    }
+}
+
+```
+
 
