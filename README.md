@@ -66,6 +66,8 @@ Image Output
 
 
 ### Backend Code
+- The GetFoodTable method is a helper method to store temporary FoodItem on the memory.
+
 
 ```csharp
 private DataTable GetFoodTable()
@@ -83,6 +85,9 @@ private DataTable GetFoodTable()
     return (DataTable)Session["FoodTable"];
 }
 ```
+
+- The btnAddFood_Click method is an event handler that handles the process of inputting detailed food items of the user wanted to donate. So once you added the food item, it will display in two different grid views: the one in Dashboard and the other in “Drop Off Modal”.
+
 ```csharp
 protected void btnAddFood_Click(object sender, EventArgs e)
 {
@@ -117,6 +122,8 @@ protected void btnAddFood_Click(object sender, EventArgs e)
     txtExpiryDate.Text = "";
 }
 ```
+
+- Then the last method called SaveAppointmentClick which is another type of event handler that handles the process of saving appointment-related data for food donations and their drop-off times and it also clears the temporary data in the memory since it is no longer needed. 
 ```csharp
 protected void SaveAppointment_Click(object sender, EventArgs e) 
   {
