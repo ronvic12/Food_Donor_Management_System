@@ -7,7 +7,7 @@ Solution:
 - Food Donation Tracking System
 
 ## Home Page
-![Home Page](Images/Home_Page.png) 
+![Home page](Images/Home_page.png) 
 
 
 ## Donor Dashboard
