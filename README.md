@@ -46,7 +46,12 @@ Solution:
 </asp:GridView>
 ```
 
-Image Output
+Output
+<br>  
+![Food Donation Grid View](Images/food_donation_gv.png) 
+
+
+
 
 #### Food Donation Grid View in Modal
 ```xml
@@ -66,9 +71,17 @@ Image Output
          <asp:Label ID=sucessMsg runat="server" CssClass="text-success"></asp:Label>
     </div>
 ```
+Output
+<br>  
+![Food Donation Grid View](Images/food_donation_gv_modal.png) 
+
+
+
 
 
 ### Backend Code
+
+#### GetFoodTable method
 - The GetFoodTable method is a helper method to store temporary FoodItem on the memory.
 
 ```csharp
@@ -88,7 +101,9 @@ private DataTable GetFoodTable()
 }
 ```
 
+#### btnAddFood_Click method
 - The btnAddFood_Click method is an event handler that handles the process of inputting detailed food items of the user wanted to donate. So once you added the food item, it will display in two different grid views: the one in Dashboard and the other in “Drop Off Modal”.
+
 
 ```csharp
 protected void btnAddFood_Click(object sender, EventArgs e)
@@ -125,7 +140,9 @@ protected void btnAddFood_Click(object sender, EventArgs e)
 }
 ```
 
-- Then the last method called SaveAppointmentClick which is another type of event handler that handles the process of saving appointment-related data for food donations and their drop-off times and it also clears the temporary data in the memory since it is no longer needed. 
+#### SaveAppointmentClick method
+- Then the last method called SaveAppointmentClick which is another type of event handler that handles the process of saving appointment-related data for food donations and their drop-off times and it also clears the temporary data in the memory since it is no longer needed.
+  
 ```csharp
 protected void SaveAppointment_Click(object sender, EventArgs e) 
   {
@@ -184,11 +201,17 @@ protected void SaveAppointment_Click(object sender, EventArgs e)
     </Columns>
 </asp:GridView>
 ```
-Image Output:
-
+Output:
+<br>
+![Recipient Dashboard](Images/Recipient_Dashboard.png)
 
 
 ### Back-End Code
+
+#### gvAvailableFood_RowCommand event handler
+- The event handler gridviewFood_RowCommand recives the data from request button then sends into two tables: request and food item.
+- The first query is used to insert or update food requests for recipients identified by their unique IDs, ensuring the status is set to ‘Pending.
+- The second query updates the status of a food item being requested in order to see the request in the admin dashboard. 
 
 ```csharp
 protected void gvAvailableFood_RowCommand(object sender, GridViewCommandEventArgs e)
@@ -237,7 +260,36 @@ protected void gvAvailableFood_RowCommand(object sender, GridViewCommandEventArg
 
 ```
 
+#### LoadAvailableFood method
+- The LoadAvailableFood method displays the available food items in the recipient dashboard.
+  
+```csharp
+ private void LoadAvailableFood()
+ {
+     string query = @" 
+                 SELECT 
+                 fi.ID as FoodItemID, 
+                  fc.Name AS FoodCategory,
+                  fi.Name AS FoodName,
+                  fi.Description as Description,
+                  fi.Quantity as Quantity,
+                  fi.ExpiryDate AS ExpirationDate,
+                  fi.Status as Status 
+            FROM 
+                 fooditems fi 
+        INNER JOIN  
+                  foodcategories fc ON fi.CategoryID = fc.ID
+         WHERE fi.Status = @status";
 
+     // using Parameter queries, to avoid injection
+     var parameters = new Dictionary<string, object>
+     {
+         { "@status", FoodStatus.Available.ToString() }
+     };
+      gvAvailableFood.DataSource = DatabaseHelper.ExecuteQuery(query, parameters);
+     gvAvailableFood.DataBind();
+ }
+```
 
 ## Admin Dashboard
 
@@ -275,7 +327,7 @@ protected void gvAvailableFood_RowCommand(object sender, GridViewCommandEventArg
 
 ```
 Output
-
+![donor_dashboard_view2](Images/donor_dashboard_view2.png)
 
 ```xml
 <!-- Modal Structure -->
@@ -297,7 +349,7 @@ Output
 ```
 
 Output
-
+![donor_dashboard_view1](Images/donor_dashboard_view1.png)
 
 
 ### Back-End Code
