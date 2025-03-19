@@ -7,4 +7,4 @@ Solution:
 - Food Donation Tracking System
 
 Main Page:
-![Alt text](Images/Donor Dashboard.png)
+![Alt text](Images/Donor_Dashboard.png)
