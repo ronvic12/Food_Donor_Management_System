@@ -27,10 +27,13 @@ Solution:
 
 
 
-## Code Snippets:
+## Code Implementation 
+
 ## Donor Dashboard
-### Front-End Code 
-- Food Donation Grid View
+
+### Front-End Code
+
+#### Food Donation Grid View
 ```xml
 <asp:GridView ID="gvFoodItems" runat="server" AutoGenerateColumns="False" CssClass="gridview-style">
     <Columns>
@@ -45,7 +48,7 @@ Solution:
 
 Image Output
 
-- Food Donation Grid View in Modal
+#### Food Donation Grid View in Modal
 ```xml
     <asp:GridView ID="gvModalFoodItem" runat="server" AutoGenerateColumns="False"  CssClass="gridview-style">
     <Columns>
@@ -235,3 +238,161 @@ protected void gvAvailableFood_RowCommand(object sender, GridViewCommandEventArg
 ```
 
 
+
+## Admin Dashboard
+
+### Front-End Code
+
+#### Donor Dashboard Drop Off View
+
+```xml
+<div class="dashboard_table">
+    <asp:Panel ID="pnlDonorDashboard" runat="server" Width="100%">
+        <h3 style="text-align: center;">Donor Dashboard: Drop Off</h3>
+        <hr>
+        <div id="appointmentsContainer">
+            <div class="appointmentGroup">
+                <asp:Label ID="lblNoAppointments" runat="server" Text="" Visible="false" />
+                <asp:Repeater ID="rptTodayAppointments" runat="server">
+                    <ItemTemplate>
+                        <h4 class="appointmentDate"><%# Eval("AppointmentTime", "{0:MMMM dd, yyyy}") %></h4>
+                        <div class="appointment">
+                            <h5><%# Eval("DonorName") %> - <%# Eval("AppointmentTime", "{0:hh:mm tt}") %></h5>
+                            <button type="button"
+                                class="btn btn-info"
+                                data-toggle="modal"
+                                data-target="#foodDetailsModal"
+                                onclick="showFoodDetails('<%# Server.HtmlEncode(Eval("SerializedFoodItems").ToString().Replace("'", "\\'")) %>')">
+                                View Food Details
+                            </button>
+                        </div>
+                    </ItemTemplate>
+                </asp:Repeater>
+            </div>
+        </div>
+    </asp:Panel>
+</div>
+
+```
+Output
+
+
+```xml
+<!-- Modal Structure -->
+<div class="modal fade" id="foodDetailsModal" tabindex="-1" aria-labelledby="foodDetailsLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" id="foodDetailContent">
+            <div class="modal-header">
+                <h5 class="modal-title" id="foodDetailsLabel">Food Details</h5>
+            </div>
+            <div class="modal-body">
+                <!-- This is where the food details will be populated dynamically -->
+                <div id="foodDetailsContainer"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+```
+
+Output
+
+
+
+### Back-End Code
+
+#### LoadDropOffAppointment method
+- The LoadDropOffAppointment method allows admin to see current and future appointments so they can plan accordingly.
+```csharp
+private void LoadDropOffAppointments()
+  {
+      string query = @"
+      SELECT 
+       u.Name AS DonorName,
+      fi.ID as FoodItemID,
+      fc.Name AS FoodCategory,
+      fi.Name AS FoodName,
+      fi.Description,
+      fi.Quantity,
+      fi.ExpiryDate AS ExpirationDate,
+      fi.Status,
+      fi.DropOffDateTime AS AppointmentTime
+  FROM 
+      FoodItems fi
+  INNER JOIN 
+      Users u ON fi.DonorID = u.ID
+  INNER JOIN 
+      FoodCategories fc ON fi.CategoryID = fc.ID
+  WHERE
+      fi.DropOffDateTime >= CURDATE() AND fi.Status = @Status
+  ORDER BY
+      fi.DropOffDateTime "; 
+      var parameters = new Dictionary<string, object>
+      {
+          { "@status", FoodStatus.Pending.ToString() }
+      };
+```
+
+#### LINQ Query
+- This query both retrieves and categorizes relevant information about pending food items including the expiration date, quantity, and proposed drop-off date.
+- The LINQ Query then groups in hierarchical information to emphasize the important details like DonorName and Drop off time so that it is easier to understand for the admin user and it binds back into the front end.
+``` csharp
+
+        // Implementing LINQ Structure because the data needs to be shown in front end is group hierarchally. 
+      var result = DatabaseHelper.ExecuteQuery(query, parameters);
+      // Group data by DonorName and AppointmentTime
+      var groupedData = result.AsEnumerable()
+                        .GroupBy(row => new
+                        {
+                            DonorName = row["DonorName"],
+                            AppointmentTime = row["AppointmentTime"]
+                        }).Select(group => new
+                        {
+                            DonorName = group.Key.DonorName,
+                            AppointmentTime = group.Key.AppointmentTime,
+                            FoodItems = group.Select(item => new
+                            {
+                                FoodCategory = item["FoodCategory"],
+                                FoodName = item["FoodName"],
+                                Description = item["Description"],
+                                Quantity = item["Quantity"],
+                                ExpirationDate = item["ExpirationDate"],
+                                FoodItemID = item["FoodItemID"],
+                                Status = item["Status"]
+                            }).ToList(),  // to ensure it serializes into JSON
+                            // Serialize the FoodItems as JSON and pass it to the UI
+                            SerializedFoodItems = JsonConvert.SerializeObject(group.Select(item => new
+                            {
+                                FoodCategory = item["FoodCategory"],
+                                FoodName = item["FoodName"],
+                                Description = item["Description"],
+                                Quantity = item["Quantity"],
+                                ExpirationDate = item["ExpirationDate"],
+                                FoodItemID = item["FoodItemID"],
+                                Status = item["Status"]
+                            }).ToList())
+                        })
+                        .ToList();// Ensure grouping is executed before serializing to JSON
+     	      // Check if data is empty
+  }
+```
+
+#### Edge Case
+``` csharp
+      if (groupedData.Count == 0)
+      {
+          // Show a label with a more detailed message if no appointments
+          lblNoAppointments.Text = "There are no scheduled appointments today or in the future dates.";
+          lblNoAppointments.Visible = true;  // Make the label visible
+          rptTodayAppointments.Visible = false;  // Hide the Repeater
+      }
+      else
+      {
+          // Bind the data to the Repeater if available
+          rptTodayAppointments.DataSource = groupedData;
+          rptTodayAppointments.DataBind();
+          lblNoAppointments.Visible = false;  // Hide the "No appointments" message
+          rptTodayAppointments.Visible = true;  // Ensure the Repeater is visible
+      }
+```
