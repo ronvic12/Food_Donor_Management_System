@@ -78,7 +78,6 @@ Output
 
 
 
-
 ### Backend Code
 
 #### GetFoodTable method
@@ -103,7 +102,6 @@ private DataTable GetFoodTable()
 
 #### btnAddFood_Click method
 - The btnAddFood_Click method is an event handler that handles the process of inputting detailed food items of the user wanted to donate. So once you added the food item, it will display in two different grid views: the one in Dashboard and the other in “Drop Off Modal”.
-
 
 ```csharp
 protected void btnAddFood_Click(object sender, EventArgs e)
@@ -201,9 +199,12 @@ protected void SaveAppointment_Click(object sender, EventArgs e)
     </Columns>
 </asp:GridView>
 ```
-Output:
-<br>
+
+Output
+<br>  
 ![Recipient Dashboard](Images/Recipient_Dashboard.png)
+
+
 
 
 ### Back-End Code
@@ -326,8 +327,13 @@ protected void gvAvailableFood_RowCommand(object sender, GridViewCommandEventArg
 </div>
 
 ```
+
 Output
+<br>  
 ![donor_dashboard_view2](Images/donor_dashboard_view2.png)
+
+
+
 
 ```xml
 <!-- Modal Structure -->
@@ -349,7 +355,10 @@ Output
 ```
 
 Output
+<br>  
 ![donor_dashboard_view1](Images/donor_dashboard_view1.png)
+
+
 
 
 ### Back-End Code
